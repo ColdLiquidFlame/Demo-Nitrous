@@ -14,7 +14,7 @@ app.get('/', function(req, res) {
 
 app.use(express.static(__dirname));
 
-var server = app.listen(port, ip, function() {
+var server = app.listen(port, host, function() {
   var host = server.address().address;  
   var port = server.address().port;
   
