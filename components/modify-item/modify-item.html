@@ -1,0 +1,30 @@
+<div class="row" ng-show="showForm">
+  <div class="col-md-10">
+    <input type="text" placeholder="Enter item" class="form-control" ng-model="newItem">
+  </div>
+</div>
+<div class="row" ng-class="{voffset1: showForm}">
+  <div class="col-md-12">
+    <button type="button" class="btn btn-primary" ng-hide="showForm" ng-click="showForm = true">
+      <span class="glyphicon glyphicon-plus"></span>
+      <span class="hidden-xs">Add Item</span>
+        </button>
+    <button type="button" class="btn btn-success" ng-disabled="!newItem" ng-show="showForm" ng-click="saveItem()">
+      <span class="glyphicon glyphicon-floppy-disk"></span>
+      <span class="hidden-xs">Save Item</span>
+    </button>
+    <button type="button" class="btn btn-default" ng-show="showForm" ng-click="cancelEdit()">
+      <span class="glyphicon glyphicon-remove"></span>
+      <span class="hidden-xs">Cancel Item</span>
+    </button>
+    <button type="button" class="btn btn-warning" ng-click="beginItemEdit()" ng-show="selectedItems &&selectedItems.length === 1">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs">Edit Item</span>
+      </button>
+    <button type="button" class="btn btn-danger" ng-click="deleteItem()" ng-show="selectedItems &&selectedItems.length > 0">
+        <span class="glyphicon glyphicon-trash"></span>
+        <span class="hidden-xs">Delete Item</span>
+      </button>
+
+  </div>
+</div>
