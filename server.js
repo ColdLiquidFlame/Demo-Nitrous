@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 var path = require('path');
+var host = process.env.OPENSHIFT_NODEJS_IP || "0.0.0.0";
+var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
 
 app.get('/', function(req, res) {
   
@@ -12,7 +14,7 @@ app.get('/', function(req, res) {
 
 app.use(express.static(__dirname));
 
-var server = app.listen(3000, function() {
+var server = app.listen(port, ip, function() {
   var host = server.address().address;  
   var port = server.address().port;
   
