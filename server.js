@@ -4,6 +4,8 @@ var path = require('path');
 var host = process.env.OPENSHIFT_NODEJS_IP || "0.0.0.0";
 var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
 
+app.use(express.static(__dirname));
+
 app.get('/', function(req, res) {
   
   var file = path.join(__dirname + '/index.html');
@@ -12,7 +14,6 @@ app.get('/', function(req, res) {
   res.sendFile(file);
 });
 
-app.use(express.static(__dirname));
 
 var server = app.listen(port, host, function() {
   var host = server.address().address;  

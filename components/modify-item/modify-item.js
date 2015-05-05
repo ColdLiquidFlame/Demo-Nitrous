@@ -9,34 +9,43 @@ angular.module('modify-item-directive', [])
       selectedItems: '='
     },
     controller: function($scope) {
-      $scope.showForm = false;
-      $scope.saveItem = function() {
-        itemService.addItem($scope.newItem);
-        $scope.newItem = null;
-        $scope.showForm = false;
+      /**** Add ****/
+      $scope.beginItemAdd = function() {
+        $scope.isAdd = true;
       };
-      $scope.addItem = function() {
-        itemService.removeItem($scope.selectedItems);
-        $scope.selectedItems = null;
+      
+      /**** Edit ****/
+      $scope.beginItemEdit = function() {
+        $scope.isEdit = true;
+        var singleItem = $scope.selectedItems[0];
+        $scope.newItem = singleItem.value;
       };
+      
+      /**** Save ****/
+      $scope.save = function() {
+        if($scope.isAdd) {
+          itemService.addItem($scope.newItem);
+        } else if($scope.isEdit) {
+          var item = $scope.selectedItems[0];
+          item.value = $scope.newItem;
+          itemService.editItem(item);
+        }
+                
+        $scope.cancelEdit();
+      };
+      
+      /**** Delete ****/
       $scope.deleteItem = function() {
         itemService.removeItem($scope.selectedItems);
         $scope.selectedItems = null;
       };
-      $scope.beginItemEdit = function() {
-        $scope.isEdit = true;
-        $scope.showForm = true;
-        var singleItem = $scope.selectedItems[0];
-        $scope.newItem = singleItem.value;
-      };
-      $scope.endItemEdit = function() {
-        $scope.showForm = false;
-        var singleItem = $scope.selectedItems[0];
-        singleItem.value = $scope.newItem;
-      };
+      
+      /*** Cancel ****/
       $scope.cancelEdit = function() {
         $scope.showForm = false;
-        $scope.newItem = null;
+        $scope.newItem = null;        
+        $scope.isAdd = false;        
+        $scope.isEdit = false;
       };
 
     },

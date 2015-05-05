@@ -9,11 +9,14 @@
   },
   "author": "Chris White",
   "dependencies": {
-    "express": "^4.12.3"
+    "express": "^4.12.3",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-wiredep": "^2.0.0"
   },
   "devDependencies": {
     "express-generator": "^4.12.1",
     "grunt": "^0.4.5"
   },
-  "private": true
+  "private": true,
+  "minifiedPrefix": "production"
 }

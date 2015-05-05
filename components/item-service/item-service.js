@@ -27,6 +27,11 @@ angular.module('item-service', [])
 
     });
   };
+  
+  this.editItem = function(item) {
+    var index = arrayObjectIndexOf(array, item.id, 'id');
+    array[index] = item;
+  };
 
   this.items = function() {
     return array;
