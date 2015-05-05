@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html ng-app="myApp">
 
-  <head>    
-    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css" />
+  <head>
+    <!-- injector:css -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+    <!-- endinjector -->
     <base href="/">
   </head>
 
@@ -10,21 +12,21 @@
     <div ng-include="'components/navbar/navbar.html'"></div>
     
     <div class="container" ng-view></div>
-        
-    <script src="components/angular/angular.js"></script>
-    <script src="components/angular-route/angular-route.js"></script>
-    <script src="components/jquery/dist/jquery.js"></script>
-    <script src="components/bootstrap/dist/js/bootstrap.js"></script>
     
-    <script src="app.js"></script> 
-    <script src="main/main.js"></script>
-    <script src="lists/lists.js"></script>
-    
-    <script src="components/modify-item/modify-item.js"></script>   
-    <script src="components/list-item/list-item.js"></script>   
-    <script src="components/id-service/id-service.js"></script> 
-    <script src="components/item-service/item-service.js"></script>
-    <script src="components/navbar/navbar.js"></script>     
+    <!-- injector:js -->
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/app.js"></script>
+    <script src="/components/id-service/id-service.js"></script>
+    <script src="/components/item-service/item-service.js"></script>
+    <script src="/components/list-item/list-item.js"></script>
+    <script src="/components/modify-item/modify-item.js"></script>
+    <script src="/components/navbar/navbar.js"></script>
+    <script src="/lists/lists.js"></script>
+    <script src="/main/main.js"></script>
+    <!-- endinjector -->
   </body>
 
 </html>
