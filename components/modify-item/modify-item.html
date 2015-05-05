@@ -3,7 +3,7 @@
     <input type="text" placeholder="Enter item" class="form-control" ng-model="newItem">
   </div>
 </div>
-<div class="row" ng-class="{voffset1: showForm}">
+<div class="row" ng-class="{voffset1: isAdd || isEdit}">
   <div class="col-md-12">
     <button type="button" class="btn btn-primary" ng-hide="isAdd || isEdit" ng-click="beginItemAdd()">
       <span class="glyphicon glyphicon-plus"></span>
