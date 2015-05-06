@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+  <head>
+    <!-- injector:css -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+    <!-- endinjector -->
+    <base href="/">
+  </head>
+
+  <body>    
+    <div ng-include="'components/navbar/navbar.html'"></div>
+    
+    <div class="container" ng-view></div>
+    
+    <!-- injector:js -->
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/bower_components/firebase/firebase.js"></script>
+    <script src="/bower_components/angularfire/dist/angularfire.js"></script>
+    <script src="/www/app.js"></script>
+    <script src="/www/components/id-service/id-service.js"></script>
+    <script src="/www/components/item-service/item-service.js"></script>
+    <script src="/www/components/list-item/list-item.js"></script>
+    <script src="/www/components/modify-item/modify-item.js"></script>
+    <script src="/www/components/navbar/navbar.js"></script>
+    <script src="/www/lists/lists.js"></script>
+    <script src="/www/main/main.js"></script>
+    <!-- endinjector -->
+    
+  </body>
+
+</html>
