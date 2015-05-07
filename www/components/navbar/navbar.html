@@ -16,10 +16,10 @@
     <li ng-class="{active: navbar.lists}"><a href="#/lists">Lists</a></li>
   </ul>
   <ul class="nav navbar-nav navbar-right">
-    <li ng-hide="auth"><a href="#/login">Login</a></li>
+    <li ng-hide="auth"><a href="#/login">Login | Register</a></li>
     <li ng-show="auth" class='dropdown' >
       <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">
-        {{ auth.uid }}
+        {{ user.firstName + ' ' + user.lastName }}
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu" role="menu">

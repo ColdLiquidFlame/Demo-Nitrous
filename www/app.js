@@ -7,7 +7,9 @@ angular.module('myApp', ['ngRoute',
                          'myApp.main', 
                          'myApp.lists', 
                          'myApp.navbars',
-                         'myApp.login'
+                         'myApp.login',
+                         'myApp.register'
+
                         ])
 
 .run(['$rootScope', '$location', function ($rootScope, $location) {
