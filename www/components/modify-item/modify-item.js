@@ -6,49 +6,40 @@ angular.module('modify-item-directive', [])
     templateUrl: 'components/modify-item/modify-item.html',
     scope: {
       items: '=listItems',
-      selectedItems: '='
+      selectedItem: '='
     },
-    controller: function($scope) {
-      /**** Add ****/
-      $scope.beginItemAdd = function() {
-        $scope.isAdd = true;
-      };
+    controller: ['$scope', function($scope) {
+          $scope.$watch('selectedItem', function(newValue) {
+            $scope.currentItem = angular.copy($scope.selectedItem);
+          });
       
-      /**** Edit ****/
-      $scope.beginItemEdit = function() {
-        $scope.isEdit = true;
-        var singleItem = $scope.selectedItems[0];
-        $scope.newItem = singleItem.value;
-      };
-      
-      /**** Save ****/
-      $scope.save = function() {
-        if($scope.isAdd) {
-          itemService.addItem($scope.newItem);
-        } else if($scope.isEdit) {
-          var item = $scope.selectedItems[0];
-          item.value = $scope.newItem;
-          itemService.editItem(item);
-        }
-                
-        $scope.cancelEdit();
-      };
-      
-      /**** Delete ****/
-      $scope.deleteItem = function() {
-        itemService.removeItem($scope.selectedItems);
-        $scope.selectedItems = null;
-      };
-      
-      /*** Cancel ****/
-      $scope.cancelEdit = function() {
-        $scope.showForm = false;
-        $scope.newItem = null;        
-        $scope.isAdd = false;        
-        $scope.isEdit = false;
-      };
-
-    },
+          /**** Add ****/
+          $scope.beginItemAdd = function() {
+            $scope.isAdd = true;
+          };
+          
+          /**** Save ****/
+          $scope.save = function() {
+            if($scope.isAdd) {
+              itemService.addItem($scope.currentItem);
+            } else {//if($scope.isEdit) {
+              $scope.selectedItem.value = $scope.currentItem.value;
+              itemService.editItem($scope.selectedItem);
+            }
+                    
+            $scope.cancelEdit();
+          };
+          
+          /*** Cancel ****/
+          $scope.cancelEdit = function() {
+            $scope.showForm = false;
+            $scope.currentItem = null;
+            $scope.selectedItem = null;     
+            $scope.isAdd = false;        
+            $scope.isEdit = false;
+          };
+    
+        }],
     link: function(scope, element, attr) {}
   };
 }]);

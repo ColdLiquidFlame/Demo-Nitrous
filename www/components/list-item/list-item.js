@@ -1,28 +1,22 @@
 angular.module('list-item-directive', [])
 
-.directive('listItem', [function() {
+.directive('listItem', ['itemService', function(itemService) {
   return {
     restrict: 'E',
     templateUrl: 'components/list-item/list-item.html',
     scope: {
     	items: '=',
-      selectedItems: '=',
+      selectedItem: '=',
       options: '=',
     },
-    controller: function($scope) {
-      $scope.$watch('items', function (newValue, oldValue, scope) {        
-        $scope.selectedItems = [];
-          angular.forEach(newValue, function(key, value) {
-            if(key.selected) {
-              var convertedItem = key;
-              delete convertedItem.selected;
-              $scope.selectedItems.push(convertedItem);
-            }
-          });
-        
-        
-        
-      }, true);
-    }
+    controller: ['$scope', function($scope) {
+               $scope.delete = function (item) {
+                itemService.removeItem(item);
+               };
+
+               $scope.edit = function (item) {
+                $scope.selectedItem = item;
+               };
+    }]
   };
 }]);

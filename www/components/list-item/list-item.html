@@ -1,13 +1,29 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-{{ options.titleClass || 'default' }}">
-      <div class="panel-heading" ng-show="options.title">{{ options.title }}</div>
-      <div class="list-group">     
-        <span class="list-group-item" ng-hide="items.length">No items</span>
-        <div class="list-group-item" ng-click="selected = !selected; item.selected = selected" ng-repeat="item in items" ng-class="{active: selected}"> 
-          {{ item.value }} 
-        </div>
-      </div>
-    </div>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Items</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in items" ng-mouseenter="row = true;" ng-mouseleave="row = false">
+          <td>{{ item.value }}</td>
+          <td>
+            <div class="pull-right">
+            <button type="button" class="btn btn-xs btn-warning" ng-show="row" ng-click="edit(item)">
+              <span class="glyphicon glyphicon-pencil"></span>
+              <span class="hidden-xs">Edit</span>
+            </button>
+            <button type="button" class="btn btn-xs btn-danger" ng-show="row" ng-click="delete(item)">
+              <span class="glyphicon glyphicon-trash"></span>
+              <span class="hidden-xs">Delete</span>
+            </button>
+          </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

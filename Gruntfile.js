@@ -6,7 +6,8 @@ module.exports = function(grunt) {
         banner: ' /**** <%= pkg.name %> - <%= pkg.author %> ****/\n'
       },
       build: {
-        files: {'www/assets/<%= pkg.minifiedPrefix %>.js': ['www/assets/production.js']}
+        src: ['www/assets/<%= pkg.minifiedPrefix %>.js'],
+        dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
       }
     },
     injector: {
@@ -48,8 +49,8 @@ module.exports = function(grunt) {
     },
     ngmin: {
       prod: {
-        src: ['app/www/assets/<%= pkg.minifiedPrefix %>.js'],
-        dest: 'app/www/assets/<%= pkg.minifiedPrefix %>.js'
+        src: ['www/assets/<%= pkg.minifiedPrefix %>.js'],
+        dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
       }
     }
   });  
@@ -62,8 +63,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-ngmin');
   
-  grunt.registerTask('default', ['jshint', 'clean', 'injector:dev']);
+  grunt.registerTask('dev', ['jshint', 'clean', 'injector:dev']);
   
-  grunt.registerTask('test', ['jshint', 'clean', 'concat:prod', 'ngmin:prod', 'uglify', 'injector:prod']);
+  grunt.registerTask('prod', ['jshint', 'clean', 'concat:prod', 'ngmin:prod', 'uglify', 'injector:prod']);
 
 };

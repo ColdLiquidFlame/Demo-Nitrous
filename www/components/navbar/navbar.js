@@ -1,6 +1,6 @@
-angular.module('myApp.navbars', [])
+angular.module('myApp.navbars', ['authentication-factory'])
 
-.controller('NavBarCtrl', ['$scope', '$location', function($scope, $location) {
+.controller('NavBarCtrl', ['$scope', '$location', 'Auth', function($scope, $location, Auth) {
   function UpdateNavbar() {
     $scope.navbar = {};
     switch($location.$$url) {
@@ -16,6 +16,10 @@ angular.module('myApp.navbars', [])
   $scope.$on('$locationChangeStart', function(event) {
     UpdateNavbar();
   });
+  
+  $scope.logout = function() {
+    Auth.$unauth();
+  };
   
   UpdateNavbar();
 }]);

@@ -1,30 +1,22 @@
-<div class="row" ng-show="isAdd || isEdit">
+<div class="row" ng-show="isAdd || currentItem">
   <div class="col-md-10">
-    <input type="text" placeholder="Enter item" class="form-control" ng-model="newItem">
+    <input type="text" placeholder="Enter item" class="form-control" ng-model="currentItem.value">
   </div>
 </div>
 <div class="row" ng-class="{voffset1: isAdd || isEdit}">
   <div class="col-md-12">
-    <button type="button" class="btn btn-primary" ng-hide="isAdd || isEdit" ng-click="beginItemAdd()">
+    <button type="button" class="btn btn-primary" ng-hide="isAdd || currentItem" ng-click="beginItemAdd()">
       <span class="glyphicon glyphicon-plus"></span>
       <span class="hidden-xs">Add Item</span>
         </button>
-    <button type="button" class="btn btn-success" ng-disabled="!newItem" ng-show="isAdd || isEdit" ng-click="save()">
+    <button type="button" class="btn btn-success" ng-disabled="!currentItem.value" ng-show="isAdd || currentItem" ng-click="save()">
       <span class="glyphicon glyphicon-floppy-disk"></span>
       <span class="hidden-xs">Save Item</span>
     </button>
-    <button type="button" class="btn btn-default" ng-show="isAdd || isEdit" ng-click="cancelEdit()">
+    <button type="button" class="btn btn-default" ng-show="isAdd || currentItem" ng-click="cancelEdit()">
       <span class="glyphicon glyphicon-remove"></span>
       <span class="hidden-xs">Cancel Item</span>
     </button>
-    <button type="button" class="btn btn-warning" ng-click="beginItemEdit()" ng-show="selectedItems && selectedItems.length === 1 && !(isAdd || isEdit)">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-xs">Edit Item</span>
-      </button>
-    <button type="button" class="btn btn-danger" ng-click="deleteItem()" ng-show="selectedItems &&selectedItems.length > 0  && !(isAdd || isEdit)">
-        <span class="glyphicon glyphicon-trash"></span>
-        <span class="hidden-xs">Delete Item</span>
-      </button>
 
   </div>
 </div>
