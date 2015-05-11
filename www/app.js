@@ -3,6 +3,7 @@ angular.module('myApp', ['ngRoute',
                          'modify-item-directive',  
                          'item-service', 
                          'list-item-directive', 
+                         'authentication-factory',
                          /*** Views ***/
                          'myApp.main', 
                          'myApp.lists', 

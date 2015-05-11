@@ -8,6 +8,6 @@ angular.module('myApp.main', ['ngRoute'])
     });
 }])
 
-.controller('MainCtrl', ['$scope', function($scope) {
-  $scope.message = 'Hello World';
+.controller('MainCtrl', ['$scope', 'Auth', function($scope, Auth) {
+  
 }]);

@@ -52,19 +52,42 @@ module.exports = function(grunt) {
         src: ['www/assets/<%= pkg.minifiedPrefix %>.js'],
         dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
       }
+    },
+    watch: {
+      options: {
+          spawn: false,
+          livereload: true
+      },
+      newFiles: {
+        files: ['bower.json', 'www/**/*.js'],
+        tasks: ['dev'],
+        options: {
+          event: ['added', 'deleted']
+        }
+      },
+      changedFiles: {
+        options: {
+          event: 'changed'
+        },
+        files: ['www/**/*.js'],
+        tasks: ['jshint']
+      }
     }
   });  
   
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-injector');
-  grunt.loadNpmTasks('grunt-express-server');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-express-server');
+  grunt.loadNpmTasks('grunt-injector');
   grunt.loadNpmTasks('grunt-ngmin');
   
   grunt.registerTask('dev', ['jshint', 'clean', 'injector:dev']);
   
   grunt.registerTask('prod', ['jshint', 'clean', 'concat:prod', 'ngmin:prod', 'uglify', 'injector:prod']);
+
+  grunt.registerTask('serve', ['dev', 'express', 'watch']);
 
 };

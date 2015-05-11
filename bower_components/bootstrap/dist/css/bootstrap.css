@@ -6581,4 +6581,7 @@ button.close {
     display: none !important;
   }
 }
+a.dropdown-toggle > span > img {
+  margin: -1em 0;
+}
 /*# sourceMappingURL=bootstrap.css.map */
