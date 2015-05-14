@@ -10,6 +10,9 @@ angular.module('myApp.navbars', ['authentication-factory'])
       case'/lists': 
         $scope.navbar.lists = true;
         break;
+      case'/locomotive/reports': 
+        $scope.navbar.locomotive = true;
+        break;
     }
   }
   

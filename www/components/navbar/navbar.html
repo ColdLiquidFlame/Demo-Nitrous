@@ -12,11 +12,12 @@
     </div>
   <div class="collapse navbar-collapse" id="navbar-collapse">
   <ul class="nav navbar-nav">
-    <li ng-class="{active: navbar.main}"><a href="#/main">Home</a></li>
-    <li ng-class="{active: navbar.lists}"><a href="#/lists">Lists</a></li>
+    <li ng-class="{active: navbar.main}"><a href="/main">Home</a></li>
+    <li ng-class="{active: navbar.lists}" ng-show="auth"><a href="/lists">Lists</a></li>
+    <li ng-class="{active: navbar.locomotive}"><a href="/locomotive/reports">Locomotive Reports</a></li>
   </ul>
   <ul class="nav navbar-nav navbar-right">
-    <li ng-hide="auth"><a href="#/login">Login | Register</a></li>
+    <li ng-hide="auth"><a href="/login">Login | Register</a></li>
     <li ng-show="auth" class='dropdown' >
       <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">
         <span ng-show="auth.provider === 'password'">{{ user.firstName + ' ' + user.lastName }}</span>

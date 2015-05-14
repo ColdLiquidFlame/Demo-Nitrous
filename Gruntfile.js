@@ -1,4 +1,7 @@
 module.exports = function(grunt) {
+
+  require('time-grunt')(grunt);
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     uglify: {
@@ -16,7 +19,7 @@ module.exports = function(grunt) {
       },
       dev: {
         files: {
-          'www/index.html': ['bower.json', 'www/**/*.js', '!Gruntfile.js', '!server.js', '!bower_components/**/*', '!node_modules/**/*']
+          'www/index.html': ['bower.json', 'www/app.js', 'www/**/*.js', '!www/**/*_test.js', '!Gruntfile.js', '!server.js', '!bower_components/**/*', '!node_modules/**/*']
         }
       },
       prod: {
@@ -40,7 +43,7 @@ module.exports = function(grunt) {
     },
     concat: {
       prod_js: {
-        src: ['www/assets/production.js', '**/*.js', '!Gruntfile.js', '!server.js', '!bower_components/**/*', '!node_modules/**/*'],
+        src: ['www/assets/production.js', '**/*.js', '!www/**/*_test.js', '!Gruntfile.js', '!server.js', '!bower_components/**/*', '!node_modules/**/*'],
         dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
       },
       prod_css: {
@@ -63,7 +66,7 @@ module.exports = function(grunt) {
           livereload: true
       },
       newFiles: {
-        files: ['bower.json', 'www/**/*.js'],
+        files: ['www/**/*.js', '!www/**/*_test.js'],
         tasks: ['dev'],
         options: {
           event: ['added', 'deleted']
@@ -73,8 +76,15 @@ module.exports = function(grunt) {
         options: {
           event: 'changed'
         },
-        files: ['www/**/*.js'],
+        files: ['bower.json', 'www/**/*.js', '!www/**/*_test.js'],
         tasks: ['jshint']
+      },
+      updateBower: {
+        options: {
+          event: 'changed'
+        },
+        files: ['bower.json'],
+        tasks: ['dev']
       }
     },
     bower_concat: {
@@ -100,6 +110,15 @@ module.exports = function(grunt) {
           { expand: true, src: ['bower_components/fontawesome/fonts/*'], dest: 'www/fonts/', flatten: true }
         ]
       }
+    },
+    cacheBust: {
+      assets: {
+        files: [{
+          cwd: '/',
+          baseDir: '/',
+          src: ['www/index.html']
+        }]
+      }
     }
   });  
   
@@ -114,6 +133,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-injector');
   grunt.loadNpmTasks('grunt-ngmin');
   grunt.loadNpmTasks('grunt-bower-concat');
+  grunt.loadNpmTasks('grunt-cache-bust');
   
   grunt.registerTask('dev', ['jshint', 'clean', 'injector:dev']);
   

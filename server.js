@@ -15,7 +15,7 @@ app.get('/*/*.html', function(req, res) {
   res.sendFile(file);
 });
 
-app.get('/', function(req, res) {
+app.get('/*', function(req, res) {
   var file = path.join(__dirname, 'www/index.html');
   console.log('/: ' + file);
   

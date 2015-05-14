@@ -9,8 +9,9 @@ angular.module('myApp', ['ngRoute',
                          'myApp.lists', 
                          'myApp.navbars',
                          'myApp.login',
-                         'myApp.register'
-
+                         'myApp.register',
+                         'myApp.locomotive-reports',
+                         'myApp.locomotive-reports-add'
                         ])
 
 .run(['$rootScope', '$location', function ($rootScope, $location) {
@@ -24,4 +25,6 @@ angular.module('myApp', ['ngRoute',
 /**** Configuration ****/
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
   $routeProvider.otherwise({redirectTo: '/main'});
+
+  $locationProvider.html5Mode(true);
 }]);
