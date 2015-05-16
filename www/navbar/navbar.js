@@ -1,6 +1,6 @@
 angular.module('myApp.navbars', ['authentication-factory'])
 
-.controller('NavBarCtrl', ['$scope', '$location', 'Auth', function($scope, $location, Auth) {
+.controller('NavBarCtrl', ['$scope', '$location', 'Auth', '$rootScope', function($scope, $location, Auth, $rootScope) {
   function UpdateNavbar() {
     $scope.navbar = {};
     switch($location.$$url) {

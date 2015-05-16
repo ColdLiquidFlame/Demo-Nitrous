@@ -1,0 +1,31 @@
+<h1>Submit Report</h1>
+
+<form name='form' novalidate>
+    <div class="form-group" ng-class="{ 'has-error': (form.$submitted || form.dateSpotted.$touched) && (form.dateSpotted.$error.required) }">
+    	<label class="control-label" for="dateSpotted">Train was spotted</label>
+    	<div class="input-group input-append date" date-picker="datePickerOptions">
+            <input type="text" id="dateSpotted" name="dateSpotted" ng-model="dateSpotted" placeholder="Enter date train was spotted" class="form-control input-append date" required>
+            <span class="input-group-addon add-on" id='calendar-addon'>
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+        <span ng-show="(form.$submitted || form.dateSpotted.$touched) && (form.dateSpotted.$error.required)" class="help-block">Date of train spotting is required.</span>
+        
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': (form.$submitted || form.locomotiveNumber.$touched) && (form.locomotiveNumber.$error.required) }">
+        <label class="control-label" for="locomotiveNumber">Locomotive Number</label>
+        <input id="locomotiveNumber" name="locomotiveNumber" type="text" ng-model='locomotiveNumber' class="form-control" placeholder="Enter Locomotive Number" required>
+        <span ng-show="(form.$submitted || form.locomotiveNumber.$touched) && (form.locomotiveNumber.$error.required)" class="help-block">Locomotive number is required.</span>
+    </div>
+    <div class="form-group">
+        <label for="location">Location</label>
+        <input id="location" type="text" ng-model='location' ng-blur="updateMap()" class="form-control" placeholder="Enter location">
+    </div>
+    <div class="form-group">
+        <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.events" pan='true'>
+            <ui-gmap-marker idKey='marker.id' coords='marker.coords' options="marker.options" events="marker.events"></ui-gmap-marker>
+        </ui-gmap-google-map>
+    </div>
+    <button ng-click="submitReport(form)" type="submit" class="btn btn-primary">Submit</button>
+	<a href="/locomotive/reports" class="btn btn-default">Cancel</a>
+</form>

@@ -20,7 +20,7 @@
     <li ng-hide="auth"><a href="/login">Login | Register</a></li>
     <li ng-show="auth" class='dropdown' >
       <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">
-        <span ng-show="auth.provider === 'password'">{{ user.firstName + ' ' + user.lastName }}</span>
+        <span ng-show="isPassword">{{ user.firstName + ' ' + user.lastName }}</span>
         <span ng-show="auth.provider === 'google'">
           <img width="25" height="25" style="border-radius: 150%" ng-src="{{ user.cachedUserProfile.picture }}" />
           {{ user.displayName }}
