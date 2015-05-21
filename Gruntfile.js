@@ -4,13 +4,57 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    uglify: {
-      // options: {
-      //   banner: ' /**** <%= pkg.name %> - <%= pkg.author %> ****/\n'
-      // },
+    bower_concat: {
       build: {
-        src: ['www/assets/<%= pkg.minifiedPrefix %>.js'],
+            dest: 'www/assets/production.js',
+            cssDest: 'www/assets/production.css'
+      }
+    },
+    cacheBust: {
+      assets: {
+        files: [{
+          cwd: '/',
+          baseDir: '/',
+          src: ['www/index.html']
+        }]
+      }
+    },
+    clean: {
+      build: ['www/assets','www/fonts']
+    },
+    copy: {
+      build: {
+        files: [
+          { expand: true, src: ['bower_components/bootstrap/fonts/*'], dest: 'www/fonts/', flatten: true },
+          { expand: true, src: ['bower_components/fontawesome/fonts/*'], dest: 'www/fonts/', flatten: true }
+        ]
+      }
+    },
+    concat: {
+      prod_js: {
+        src: ['www/assets/production.js', '**/*.js', '!www/**/*_test.js', '!Gruntfile.js', '!server.js', '!bower_components/**/*', '!node_modules/**/*'],
         dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
+      },
+      prod_css: {
+        src: ['www/assets/production.css', '**/*.css'],
+        dest: 'www/assets/<%= pkg.minifiedPrefix %>.css'
+      }
+    },
+    cssmin: {
+      build: {
+        options: {
+          keepSpecialComments: 0
+        },
+        files: {
+          'www/assets/<%= pkg.minifiedPrefix %>.css': ['www/assets/production.css']
+        }
+      }
+    },
+    express: {
+      dev: {
+        options: {
+          script: 'server.js'
+        }
       }
     },
     injector: {
@@ -29,26 +73,6 @@ module.exports = function(grunt) {
         files: {
           'www/index.html': ['www/assets/<%= pkg.minifiedPrefix %>.*']
         }
-      }
-    },
-    express: {
-      dev: {
-        options: {
-          script: 'server.js'
-        }
-      }
-    },
-    clean: {
-      build: ['www/assets','www/fonts']
-    },
-    concat: {
-      prod_js: {
-        src: ['www/assets/production.js', '**/*.js', '!www/**/*_test.js', '!Gruntfile.js', '!server.js', '!bower_components/**/*', '!node_modules/**/*'],
-        dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
-      },
-      prod_css: {
-        src: ['www/assets/production.css', '**/*.css'],
-        dest: 'www/assets/<%= pkg.minifiedPrefix %>.css'
       }
     },
     jshint: {
@@ -87,37 +111,13 @@ module.exports = function(grunt) {
         tasks: ['dev']
       }
     },
-    bower_concat: {
+    uglify: {
+      // options: {
+      //   banner: ' /**** <%= pkg.name %> - <%= pkg.author %> ****/\n'
+      // },
       build: {
-            dest: 'www/assets/production.js',
-            cssDest: 'www/assets/production.css'
-      }
-    },
-    cssmin: {
-      build: {
-        options: {
-          keepSpecialComments: 0
-        },
-        files: {
-          'www/assets/<%= pkg.minifiedPrefix %>.css': ['www/assets/production.css']
-        }
-      }
-    },
-    copy: {
-      build: {
-        files: [
-          { expand: true, src: ['bower_components/bootstrap/fonts/*'], dest: 'www/fonts/', flatten: true },
-          { expand: true, src: ['bower_components/fontawesome/fonts/*'], dest: 'www/fonts/', flatten: true }
-        ]
-      }
-    },
-    cacheBust: {
-      assets: {
-        files: [{
-          cwd: '/',
-          baseDir: '/',
-          src: ['www/index.html']
-        }]
+        src: ['www/assets/<%= pkg.minifiedPrefix %>.js'],
+        dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
       }
     }
   });  
@@ -147,6 +147,8 @@ module.exports = function(grunt) {
                               'copy',
                               'injector:prod']);
 
-  grunt.registerTask('serve', ['dev', 'express', 'watch']);
+  grunt.registerTask('serve', ['dev', 'express', 'watch']);  
+  grunt.registerTask('serve_prod', ['prod', 'express', 'watch']);
+
 
 };
