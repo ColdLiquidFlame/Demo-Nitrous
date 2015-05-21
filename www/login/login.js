@@ -13,63 +13,33 @@ angular.module('myApp.login', ['ngRoute', 'authentication-factory'])
     });
 }])
 
-.controller('LoginCtrl', ['$scope', 'Auth', '$routeParams', '$location', '$timeout', function($scope, Auth, $routeParams, $location, $timeout) {
-
-  var authData = Auth.$getAuth();
-  if (authData) {
-    if(angular.isDefined($routeParams.redirect)) {
-        $location.path("/" + $routeParams.redirect);
-      } else {
-        $location.path('/main');
-      } 
+.controller('LoginCtrl', ['$scope', 'Auth', '$location', function($scope, Auth, $location) {
+  function loginSuccess (authData) {
+      $location.path('/');
   }
-
-  $scope.login = function () {
-    var authData = Auth.$authWithPassword($scope.user)
-    .then(function(authData) {
-      if(angular.isDefined($routeParams.redirect)) {
-        $location.path("/" + $routeParams.redirect);
-      } else {
-        $location.path('/main');
-      } 
-    })
+  
+  $scope.loginWithPassword = function () {
+    Auth.login('password', $scope.user)
+    .then(loginSuccess)
     .catch(function(error) {
       $scope.errorMessage = "Invalid email or password";
     });
   };
+  
   $scope.loginWithGoogle = function() {
-    var options = {
-      scope: 'profile'
-    };
-
-    login('google', options)
-    .then(function(authData) {
-      if(angular.isDefined($routeParams.redirect)) {
-        $location.path("/" + $routeParams.redirect);
-      } else {
-        $location.path('/main');
-      } 
-    })
+    Auth.login('google', {scope: 'profile'})
+    .then(loginSuccess)
     .catch(function(error) {
       $scope.errorMessage = "Invalid Google login";
     });
   };
+  
   $scope.loginWithFacebook = function() {
-    login('facebook')
-    .then(function(authData) {
-      if(angular.isDefined($routeParams.redirect)) {
-        $location.path("/" + $routeParams.redirect);
-      } else {
-        $location.path('/main');
-      } 
-    })
+    Auth.login('facebook')
+    .then(loginSuccess)
     .catch(function(error) {
       $scope.errorMessage = "Invalid Facebook login";
     });
-  };
-
-  var login = function(provider, options) {
-    return Auth.$authWithOAuthPopup(provider, options);
   };
 
 }]);

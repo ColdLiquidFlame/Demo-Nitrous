@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" ng-controller="NavBarCtrl">
+<nav class="navbar navbar-default" ng-controller="NavBarCtrl" bs-navbar>
   <!-- Mobile View -->
   <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" 
@@ -12,12 +12,50 @@
     </div>
   <div class="collapse navbar-collapse" id="navbar-collapse">
   <ul class="nav navbar-nav">
-    <li ng-class="{active: navbar.main}"><a href="/main">Home</a></li>
-    <li ng-class="{active: navbar.lists}" ng-show="auth"><a href="/lists">Lists</a></li>
-    <li ng-class="{active: navbar.locomotive}"><a href="/locomotive/reports">Locomotive Reports</a></li>
+    <li data-match-route="/$"><a href="/main">Home</a></li>
+<!--     <li ng-class="{active: navbar.lists}" ng-show="auth"><a href="/lists">Lists</a></li> -->
+    <li data-match-route="/locomotive/reports.*"><a href="/locomotive/reports">Locomotive Reports</a></li>
   </ul>
   <ul class="nav navbar-nav navbar-right">
-    <li ng-hide="auth"><a href="/login">Login | Register</a></li>
+    <li ng-hide="auth" class="dropdown">
+      <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">Sign In</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <form class="navbar-form" ng-submit="loginWithPassword()">
+            <div class="form-group">
+              <label for="username">Email</label>
+              <input id="username" type="email" class="form-control" ng-model="user.email">
+            </div>  
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input id="password" type="password" class="form-control" ng-model="user.password">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-success">
+                <i class="fa fa-unlock"></i>
+                Login
+              </button>
+              <a href="/register" class="btn btn-default" role="button">
+                Register
+              </a>
+            </div>
+          </form>
+        </li>
+        <li role="presentation" class="divider"></li>
+        <li>
+          <div class="container-fluid">
+            <button type="button" class="btn btn-danger" ng-click="loginWithGoogle()">
+              <i class="fa fa-google"></i>
+              Google
+            </button>
+            <button type="button" class="btn btn-primary" ng-click="loginWithFacebook()">
+              <i class="fa fa-facebook"></i>
+              Facebook
+            </button>
+          </div>
+        </li>
+      </ul>
+    </li>
     <li ng-show="auth" class='dropdown' >
       <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">
         <span ng-show="isPassword">{{ user.firstName + ' ' + user.lastName }}</span>

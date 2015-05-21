@@ -11,7 +11,9 @@ angular.module('myApp', ['ngRoute',
                          'myApp.login',
                          'myApp.register',
                          'myApp.locomotive-reports',
-                         'myApp.locomotive-reports-add'
+                         'myApp.locomotive-reports-add',
+                         /*** 3rd Party Plug-ins ***/
+                         'mgcrea.ngStrap'
                         ])
 
 .run(['$rootScope', '$location', function ($rootScope, $location) {
@@ -24,7 +26,7 @@ angular.module('myApp', ['ngRoute',
 
 /**** Configuration ****/
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
-  $routeProvider.otherwise({redirectTo: '/main'});
+  $routeProvider.otherwise({redirectTo: '/'});
 
   $locationProvider.html5Mode(true);
 }]);

@@ -5,7 +5,7 @@
 		<tr>
 			<th>Locomotive Number</th>
 			<th>Date Reported</th>
-			<th> </th>
+			<th ng-show="auth"> </th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,7 +16,7 @@
 			<td>
 				{{ report.dateSpotted | date: "MMM d, yyyy" }}
 			</td>
-			<td>				
+			<td ng-show="auth">				
 				<input type="checkbox" ng-model="report.selected">
 			</td>
 		</tr>
@@ -29,5 +29,5 @@
 </table>
 
 
-<a href="/locomotive/reports/new" class="button button-default">Submit Report</a>
+<a href="/locomotive/reports/new" class="btn btn-primary" ng-show="auth">Submit Report</a>
 <button class="btn btn-danger pull-right" ng-show="showDeleteButton()" type="button" ng-click="deleteSelectedReports()">{{ deleteButtonText() }}</button>

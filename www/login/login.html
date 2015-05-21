@@ -1,5 +1,5 @@
 <h3><span class="text-danger" ng-show="errorMessage">{{ errorMessage }}</span></h3>
-<form ng-submit="login()" novalidate>
+<form ng-submit="loginWithPassword()" novalidate>
   <div class="form-group">
     <label for="username">Email</label>
     <input id="username" type="email" class="form-control" ng-model="user.email">

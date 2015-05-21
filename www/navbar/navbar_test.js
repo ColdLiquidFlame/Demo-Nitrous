@@ -13,7 +13,7 @@ describe('myApp.navbars', function(){
 			if(isDisplayed) {
 				navbar.logoutOfPasswordAccount();
 			}
-		})
+		});
 	});
 
 	it('should navigate to the login page when login link is clicked', function() {
@@ -28,9 +28,9 @@ describe('myApp.navbars', function(){
 		expect(browser.getCurrentUrl()).toEqual(navbar.getUrl('locomotive/reports'));
 	});
 
-	it('should hide the link to the lists view when not logged in', function() {		
-		expect(navbar.listsBtn.isDisplayed()).toBeFalsy();
-	});
+// 	it('should hide the link to the lists view when not logged in', function() {		
+// 		expect(navbar.listsBtn.isDisplayed()).toBeFalsy();
+// 	});
 
 	it('should logout when the logout button is clicked if a user is logged in', function() {
 		
@@ -54,14 +54,14 @@ describe('myApp.navbars', function(){
 		expect(navbar.passwordAccountBtn.isDisplayed()).toBeFalsy();
 	});
 
-	it('should show the link to the lists view when logged in', function() {
+// 	it('should show the link to the lists view when logged in', function() {
 
-		navbar.clickLoginBtn();
+// 		navbar.clickLoginBtn();
 
-		login.loginWithPassword('test@account.com', 'test');
+// 		login.loginWithPassword('test@account.com', 'test');
 		
-		browser.sleep(1000);
+// 		browser.sleep(1000);
 
-		expect(navbar.listsBtn.isDisplayed()).toBeTruthy();
-	});
+// 		expect(navbar.listsBtn.isDisplayed()).toBeTruthy();
+// 	});
 });

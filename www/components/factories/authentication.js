@@ -23,14 +23,30 @@ angular.module('authentication-factory', ['firebase', 'user-factory'])
         case "facebook": 
           $rootScope.isFacebook = true;
           $rootScope.user = User.UpdateUser(authData.uid, authData.facebook);
+          break;
       }
     }
     else {
       $rootScope.auth = null;
       $rootScope.user = null;
-      $location.path('/main');
+      //$location.path('/main');
     }
   });
+  
+  auth.login = function(provider, options) {
+    switch (provider)
+      {
+        case "password":
+          return auth.$authWithPassword(options);
+        default:
+          return auth.$authWithOAuthPopup(provider, options);
+          //return auth.$authWithOAuthRedirect(provider, options); //Does not work
+      }    
+  };
+  
+  auth.logout = function() {
+    auth.$unauth();
+  };
   
   return auth;
 }]);
