@@ -32,7 +32,7 @@ module.exports = function(grunt) {
     },
     concat: {
       prod_js: {
-        src: ['www/assets/production.js', '**/*.js', '!www/**/*_test.js', '!Gruntfile.js', '!server.js', '!bower_components/**/*', '!node_modules/**/*'],
+        src: ['www/assets/production.js', '**/*.js', '!e2e-tests/**/*', '!www/**/*_test.js', '!Gruntfile.js', '!server.js', '!bower_components/**/*', '!node_modules/**/*'],
         dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
       },
       prod_css: {
