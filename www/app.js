@@ -11,9 +11,7 @@ angular.module('myApp', ['ngRoute',
                          'myApp.login',
                          'myApp.register',
                          'myApp.locomotive-reports',
-                         'myApp.locomotive-reports-add',
-                         /*** 3rd Party Plug-ins ***/
-                         'mgcrea.ngStrap'
+                         'myApp.locomotive-reports-add'
                         ])
 
 .run(['$rootScope', '$location', function ($rootScope, $location) {

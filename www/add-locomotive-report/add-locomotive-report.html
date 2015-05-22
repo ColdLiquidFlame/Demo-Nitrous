@@ -3,10 +3,12 @@
 <form name='form' novalidate>
     <div class="form-group" ng-class="{ 'has-error': (form.$submitted || form.dateSpotted.$touched) && (form.dateSpotted.$error.required) }">
     	<label class="control-label" for="dateSpotted">Train was spotted</label>
-    	<div class="input-group input-append date" date-picker="datePickerOptions">
-            <input type="text" id="dateSpotted" name="dateSpotted" ng-model="dateSpotted" placeholder="Enter date train was spotted" class="form-control input-append date" required>
-            <span class="input-group-addon add-on" id='calendar-addon'>
+    	<div class="input-group input-append date">
+            <input type="text" id="dateSpotted" name="dateSpotted" ng-model="dateSpotted" placeholder="Enter date train was spotted" class="form-control" bs-datepicker required>
+            <span class="input-group-addon">
+              <label for="dateSpotted">
                 <span class="glyphicon glyphicon-calendar"></span>
+              </label>
             </span>
         </div>
         <span ng-show="(form.$submitted || form.dateSpotted.$touched) && (form.dateSpotted.$error.required)" class="help-block">Date of train spotting is required.</span>
