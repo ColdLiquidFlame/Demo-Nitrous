@@ -1,4 +1,5 @@
-angular.module('myApp', ['ngRoute',                          
+angular.module('myApp', ['ngRoute',   
+                         'ngMessages',                       
                          /*** Components ***/
                          'modify-item-directive',  
                          'item-service', 
