@@ -31,7 +31,7 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
         Auth.$onAuth(function(authData) {
             if(!authData) {
                 returnToReportsPage();
-            };
+            }
         });
 
         $scope.map = {
