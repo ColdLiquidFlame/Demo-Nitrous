@@ -1,8 +1,8 @@
 angular.module('myApp.navbars', ['authentication-factory', 'mgcrea.ngStrap.navbar'])
 
 .controller('NavBarCtrl', ['$scope', '$location', 'Auth', '$rootScope', function($scope, $location, Auth, $rootScope) {  
-  $scope.loginWithPassword = function() {
-    Auth.login('password', $scope.user);
+  $scope.loginWithPassword = function(user) {
+    Auth.login('password', user);
   };
   
   $scope.loginWithFacebook = function() {
