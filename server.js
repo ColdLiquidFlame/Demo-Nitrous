@@ -2,7 +2,7 @@ var express = require('express'),
     app = express(),
     path = require('path'),
     host = process.env.OPENSHIFT_NODEJS_IP || "0.0.0.0",
-    port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
+    port = process.env.OPENSHIFT_NODEJS_PORT || 1337;
 
 app.use("/bower_components", express.static(path.join(__dirname, "bower_components")));
 app.use("/www", express.static(path.join(__dirname, "www/")));
