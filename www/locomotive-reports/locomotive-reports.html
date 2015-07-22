@@ -1,33 +1,27 @@
-<h1>Reports</h1>
+<h1>{{ locomotiveNumber }}</h1>
+
+<a href="" ng-click="goBack()">Back</a>
 
 <table class='table table-striped'>
 	<thead>
 		<tr>
-			<th>Locomotive Number</th>
-			<th>Date Reported</th>
-			<th ng-show="auth"> </th>
+			<th>Date Spotted</th>
+			<th>Address</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr ng-repeat="report in locomotiveReports">
 			<td>
-				{{ report.locomotiveNumber }}
+				{{ report.dateSpotted | date: 'M/dd/yyyy'}}
 			</td>
-			<td>
-				{{ report.dateSpotted | date: "MMM d, yyyy" }}
-			</td>
-			<td ng-show="auth">				
-				<input type="checkbox" ng-model="report.selected">
-			</td>
+					<td>
+						{{ report.address }}
+					</td>
 		</tr>
-		<tr ng-hide="locomotiveReports">
-			<td col-span="3">
+		<tr ng-hide="locomotiveReports.length > 0">
+			<td colspan="3">
 				No reports
 			</td>
 		</tr>
 	</tbody>
 </table>
-
-
-<a href="/locomotive/reports/new" class="btn btn-primary" ng-show="auth">Submit Report</a>
-<button class="btn btn-danger pull-right" ng-show="showDeleteButton()" type="button" ng-click="deleteSelectedReports()">{{ deleteButtonText() }}</button>

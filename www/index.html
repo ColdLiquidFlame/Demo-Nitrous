@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html ng-app="myApp" ng-strict-di>
+<html ng-app="myApp">
 
   <head>
     <!-- injector:css -->
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.css">
     <link rel="stylesheet" href="/bower_components/bootstrap-additions/dist/bootstrap-additions.css">
+    <link rel="stylesheet" href="/www/app.css">
     <!-- endinjector -->
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Demo</title>
   </head>
 
-  <body>    
+  <body>
     <div ng-include="'navbar/navbar.html'"></div>
     <div class="container" ng-view></div>
     <!-- injector:js -->
@@ -44,6 +45,7 @@
     <script src="/www/main/main.js"></script>
     <script src="/www/navbar/navbar.js"></script>
     <script src="/www/register/register.js"></script>
+    <script src="/www/reports/reports.js"></script>
     <!-- endinjector -->
   </body>
 

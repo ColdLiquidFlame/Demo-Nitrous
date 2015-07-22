@@ -1,75 +1,39 @@
-angular.module('myApp.locomotive-reports', ['ngRoute', 'authentication-factory', 'locomotive-factory'])
+angular.module('myApp.locomotive-reports', ['ngRoute', 'authentication-factory',
+  'locomotive-factory', 'geocode-service'
+])
 
 .config(['$routeProvider', function($routeProvider) {
-   $routeProvider
-    .when('/locomotive/reports', {
-      controller: 'AllReportsCtrl',
+  $routeProvider
+    .when('/:locomotiveNumber/reports', {
+      controller: 'LocomotiveReportsCtrl',
       templateUrl: 'locomotive-reports/locomotive-reports.html'
     });
 }])
 
-.controller('AllReportsCtrl', ['$scope', 'LocomotiveReport', function($scope, LocomotiveReport) {
-   
-  $scope.locomotiveReports = LocomotiveReport.GetAllReports();  
-
-  $scope.deleteReport = function(reportId) {
-        reportService.deleteReport(reportId).
-        success(function() {
-            getAllReports();
-        });
-    };
+.controller('LocomotiveReportsCtrl', function($scope, $routeParams,
+  LocomotiveReport, GeoCode, $window) {
+  //LocomotiveReport = new LocomotiveReport();
+  $scope.locomotiveNumber = $routeParams.locomotiveNumber;
 
 
-    $scope.deleteSelectedReports = function() {
+  LocomotiveReport.
+  GetReportByLocomotiveNumber($scope.locomotiveNumber).
+  then(function(reports) {
+    // reports.forEach(function(report) {
+    //   GeoCode.
+    //   getAddress(report.location.latitude, report.location.longitude)
+    //     .
+    //   success(function(data) {
+    //     if (data.results.length > 0) {
+    //       report.address = data.results[0].formatted_address;
+    //     }
+    //   });
+    // });
 
-        var filtered = $scope.locomotiveReports.filter(function(report) {
-            return report.selected  === true;
-        });
+    $scope.locomotiveReports = reports;
+  });
 
-        for(var i = 0; i < filtered.length; i++)
-        {
-        	var report = filtered[i];
-        	delete report.selected;
-
-            LocomotiveReport.Remove(filtered[i])
-            .then(reportRemoved)
-            .catch(reportRemovedError);
-        }
-    };
-
-    $scope.showDeleteButton = function() {
-        return $scope.numberOfSelectedReports() > 0;
-    };
-
-    $scope.numberOfSelectedReports = function() {
-        var result = 0;
-
-        if ($scope.locomotiveReports !== undefined) {
-            for (i = 0; i < $scope.locomotiveReports.length; i++) {
-                if ($scope.locomotiveReports[i].selected) {
-                    result++;
-                }
-            }
-        }
-
-        return result;
-    };
-
-    $scope.deleteButtonText = function() {
-    	var buttonText = 'Delete selected report';
-    	if ($scope.numberOfSelectedReports() > 1) {
-    		buttonText += 's';
-    	}
-
-    	return buttonText;
-    };
-
-    function reportRemoved(data) {
-
-    }
-
-    function reportRemovedError(error) {
-
-    }
-
-}]);
+  $scope.goBack = function() {
+    $window.history.back();
+  };
+});
