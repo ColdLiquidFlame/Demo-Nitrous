@@ -98,7 +98,7 @@ angular.module('locomotive-factory', ['firebase'])
 					return 0;
 				});
 				deferred.resolve(reportsByLocomotiveNumber);
-				$rootScope.$apply();
+				//$rootScope.$apply();
 			}
 		});
 

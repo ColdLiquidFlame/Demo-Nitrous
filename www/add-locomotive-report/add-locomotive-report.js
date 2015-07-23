@@ -105,7 +105,9 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
         locomotiveNumber: $scope.locomotiveNumber,
         dateSpotted: $scope.dateSpotted.toJSON(),
         location: $scope.marker.coords,
-        address: $scope.location
+        address: $scope.location,
+        reportedBy: currentAuth.uid,
+        reported: (new Date()).toJSON()
       };
       LocomotiveReport.Add(report).then(function(data) {
         returnToReportsPage();
