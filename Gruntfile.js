@@ -70,7 +70,15 @@ module.exports = function(grunt) {
       },
       dev: {
         files: {
-          'www/index.html': ['bower.json', 'www/app.js', 'www/app.css', 'www/**/*.js', '!www/**/*_test.js', '!Gruntfile.js', '!server.js', '!bower_components/**/*', '!node_modules/**/*']
+          'www/index.html': [  'bower.json'
+                             , 'www/app.js'
+                             , 'www/app.css'
+                             , 'www/**/*.js'
+                             , '!www/**/*_test.js'
+                             , '!Gruntfile.js'
+                             , '!server.js'
+                             , '!bower_components/**/*'
+                             , '!node_modules/**/*']
         }
       },
       prod: {

@@ -1,0 +1,7 @@
+.marker-label {
+  background-color: white;
+  padding: .5em;
+  border: 1px solid black;
+}
+
+.angular-google-map-container { height: 400px; }
