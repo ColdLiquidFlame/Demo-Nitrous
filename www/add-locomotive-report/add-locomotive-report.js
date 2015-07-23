@@ -26,8 +26,8 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
   }
 ])
 
-.controller('LocomotiveReportNewCtrl', ['$scope', '$location', '$window', 'LocomotiveReport', 'uiGmapGoogleMapApi', 'GeoCode', 'currentAuth', 'Auth',
-  function($scope, $location, $window, LocomotiveReport, uiGmapGoogleMapApi, GeoCode, currentAuth, Auth) {
+.controller('LocomotiveReportNewCtrl',
+  function($scope, $location, $window, LocomotiveReport, uiGmapIsReady, GeoCode, currentAuth, Auth) {
     Auth.$onAuth(function(authData) {
       if (!authData) {
         returnToReportsPage();
@@ -94,9 +94,13 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
       $scope.marker.coords = latLng2;
       getAddressFromLatLng(position.coords.latitude, position.coords.longitude);
     };
-    uiGmapGoogleMapApi.then(function(maps) {
+    
+    //uiGmapGoogleMapApi
+    uiGmapIsReady.promise()
+      .then(function(maps) {
       $window.navigator.geolocation.getCurrentPosition(updateCurrentPosition);
     });
+    
     $scope.submitReport = function(form) {
       if (form.$invalid) {
         return;
@@ -137,4 +141,4 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
       $window.history.back();
     }
   }
-]);
+);
