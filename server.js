@@ -4,12 +4,6 @@ var express = require('express'),
     host = process.env.OPENSHIFT_NODEJS_IP || "0.0.0.0",
     port = process.env.OPENSHIFT_NODEJS_PORT || 1337;
 
-var api = express.Router();
-api.get('/GetAllReports', function(req, res){
-  res.json([{locomotiveNumber: 'one'},{locomotiveNumber: 'two'},{locomotiveNumber: 'three'}]);
-});
-
-app.use("/api", api);
 
 app.use("/bower_components", express.static(path.join(__dirname, "bower_components")));
 app.use("/www", express.static(path.join(__dirname, "www/")));
