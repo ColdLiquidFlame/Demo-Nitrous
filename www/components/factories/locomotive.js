@@ -71,7 +71,7 @@ angular.module('locomotive-factory', ['firebase'])
 				});
 
 				deferred.resolve(reports);
-				$rootScope.$apply();
+        $rootScope.safeApply();
 			});
 		});
 
@@ -98,7 +98,7 @@ angular.module('locomotive-factory', ['firebase'])
 					return 0;
 				});
 				deferred.resolve(reportsByLocomotiveNumber);
-				//$rootScope.$apply();
+				$rootScope.safeApply();
 			}
 		});
 
@@ -109,6 +109,23 @@ angular.module('locomotive-factory', ['firebase'])
 		var reportByUserRef = ref.child(uid);
 		return $firebaseObject(reportByUserRef);
 	};
+  
+  var getAllLocomotives = function () {
+    var deferred = $q.defer();
+    var locomotiveRef = new Firebase(locomotiveUrl);
+    var locomotives = [];
+    locomotiveRef.orderByChild("name").on("value", function(snapshot) {
+      locomotives.length = 0;
+      snapshot.forEach(function(childSnapshot) {
+        locomotives.push(childSnapshot.val());
+      });
+      
+      deferred.resolve(locomotives);
+			$rootScope.safeApply();
+    });
+    return deferred.promise;
+  };
+  
 	return {
 		Add: add,
 		Update: update,
@@ -117,7 +134,8 @@ angular.module('locomotive-factory', ['firebase'])
 		GetReportByLocomotiveNumber: getReportByLocomotiveNumber,
 		//GetReportByUserId: getReportByUserId,
 		Reports: reports,
-		ReportsByLocomotiveNumber: reportsByLocomotiveNumber
+		ReportsByLocomotiveNumber: reportsByLocomotiveNumber,
+    GetAllLocomotives: getAllLocomotives
 
 	};
 });

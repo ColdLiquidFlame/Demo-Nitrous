@@ -14,9 +14,14 @@
             <div g-message when="required" class="help-block">Date of train spotting is required.</div>
         </div>
     </div>
-    <div class="form-group" ng-class="{ 'has-error': (form.$submitted || form.locomotiveNumber.$touched) && (form.locomotiveNumber.$error.required) }">
-        <label class="control-label" for="locomotiveNumber">Locomotive Number</label>
-        <input id="locomotiveNumber" name="locomotiveNumber" type="text" ng-model='locomotiveNumber' class="form-control" placeholder="Enter Locomotive Number" required>
+    <div class="form-group" ng-class="{ 'has-error': (form.$submitted || form.locomotive.$touched) && (form.locomotive.$error.required) }">
+        <label class="control-label" for="locomotive">Locomotive Number</label>
+        <input id="locomotive" name="locomotive" type="text"  class="form-control" placeholder="Enter Locomotive Number" required
+               ng-model='locomotive' 
+               data-watch-options="true"
+               data-min-length="0"
+               bs-options="locomotive as locomotive.name for locomotive in locomotives" 
+               bs-typeahead >
         <div ng-messages="form.locomotiveNumber.$error" ng-if="form.locomotiveNumber.$touched">
             <div ng-message="required" class="help-block">Locomotive Number is required.</div>
         </div>

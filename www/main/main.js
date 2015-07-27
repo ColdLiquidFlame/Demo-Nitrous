@@ -8,7 +8,7 @@ angular.module('myApp.main', ['ngRoute', 'uiGmapgoogle-maps', 'locomotive-factor
     });
 })
 
-.controller('MainCtrl', function($scope, Auth, LocomotiveReport, uiGmapGoogleMapApi, uiGmapIsReady) {
+.controller('MainCtrl', function($scope, Auth, LocomotiveReport, uiGmapIsReady) {
   $scope.reports = [];
   
   uiGmapIsReady.promise()

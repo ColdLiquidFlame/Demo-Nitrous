@@ -1,18 +1,16 @@
-angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-factory', 'uiGmapgoogle-maps', 'geocode-service', 'mgcrea.ngStrap.datepicker'])
+angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-factory', 'uiGmapgoogle-maps', 'geocode-service', 'mgcrea.ngStrap.datepicker', 'mgcrea.ngStrap.typeahead'])
 
 .constant('GoogleApiKey', 'AIzaSyBvpqHEJsqyEfSgT7TcZ1MUlWrrZoRkVgE')
 
-.config(['$routeProvider', 'uiGmapGoogleMapApiProvider', 'GoogleApiKey', '$datepickerProvider',
+.config(
   function($routeProvider, uiGmapGoogleMapApiProvider, GoogleApiKey, $datepickerProvider) {
     $routeProvider.when('/reports/new', {
       controller: 'LocomotiveReportNewCtrl',
       templateUrl: 'add-locomotive-report/add-locomotive-report.html',
       resolve: {
-        "currentAuth": ['Auth', '$location',
-          function(Auth, $location) {
+        "currentAuth": function(Auth, $location) {
             return Auth.$requireAuth();
           }
-        ]
       }
     });
     uiGmapGoogleMapApiProvider.configure({
@@ -24,7 +22,7 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
       autoclose: true
     });
   }
-])
+)
 
 .controller('LocomotiveReportNewCtrl',
   function($scope, $location, $window, LocomotiveReport, uiGmapIsReady, GeoCode, currentAuth, Auth) {
@@ -33,7 +31,8 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
         returnToReportsPage();
       }
     });
-
+    
+    $scope.locomotives = [];
     $scope.map = {
       center: {
         latitude: 0,
@@ -45,6 +44,17 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
           var lat = map.getCenter().lat(),
             lng = map.getCenter().lng();
           //getAddressFromLatLng(lat, lng);
+        },
+        dblclick: function(map, eventName, args) {
+          var latLng = args[0].latLng;
+          
+          $scope.marker.coords.longitude = latLng.lng();
+          $scope.marker.coords.latitude = latLng.lat();
+          
+          map.setCenter(latLng);
+          //map.panTo(latLng);   
+          
+          getAddressFromLatLng(latLng.lat(), latLng.lng());
         }
       }
     };
@@ -70,6 +80,8 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
       orientation: 'auto',
       todayHighlight: true
     };
+    
+    $scope.dateSpotted = new Date();
     getAddressFromLatLng = function(latitude, longitude) {
       GeoCode.
       getAddress(latitude, longitude).
@@ -95,9 +107,7 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
       getAddressFromLatLng(position.coords.latitude, position.coords.longitude);
     };
     
-    //uiGmapGoogleMapApi
-    uiGmapIsReady.promise()
-      .then(function(maps) {
+    uiGmapIsReady.promise().then(function(maps) {
       $window.navigator.geolocation.getCurrentPosition(updateCurrentPosition);
     });
     
@@ -106,7 +116,7 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
         return;
       }
       var report = {
-        locomotiveNumber: $scope.locomotiveNumber,
+        locomotiveNumber: angular.isObject($scope.locomotive) ? $scope.locomotive.name : $scope.locomotive,
         dateSpotted: $scope.dateSpotted.toJSON(),
         location: $scope.marker.coords,
         address: $scope.location,
@@ -135,10 +145,14 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
       }).
       error(function(data) {});
     };
-
+  
     function returnToReportsPage() {
       //$location.path('/reports');
       $window.history.back();
     }
+    
+    LocomotiveReport.GetAllLocomotives().then(function(locomotives) {
+      $scope.locomotives = locomotives;
+    });
   }
 );
