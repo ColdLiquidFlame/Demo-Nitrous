@@ -3,7 +3,10 @@
     <div class="form-group" ng-class="{ 'has-error': (form.$submitted || form.dateSpotted.$touched) && (form.dateSpotted.$error.required) }">
         <label class="control-label" for="dateSpotted">Train was spotted</label>
         <div class="input-group input-append date">
-            <input type="text" id="dateSpotted" name="dateSpotted" ng-model="dateSpotted" placeholder="Enter date train was spotted" class="form-control" bs-datepicker required>
+            <input type="text" id="dateSpotted" name="dateSpotted" placeholder="Enter date train was spotted" class="form-control" required
+                   ng-model="dateSpotted" 
+                   data-max-date="today"
+                   bs-datepicker>
             <span class="input-group-addon">
             <label for="dateSpotted">
                 <span class="glyphicon glyphicon-calendar"></span>
@@ -39,5 +42,5 @@
         </ui-gmap-google-map>
     </div>
     <button ng-click="submitReport(form)" type="submit" class="btn btn-primary" ng-disabled="form.$invalid">Submit</button>
-    <a href="/locomotive/reports" class="btn btn-default">Cancel</a>
+    <a ng-click="returnToReportsPage()" class="btn btn-default">Cancel</a>
 </form>

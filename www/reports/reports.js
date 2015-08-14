@@ -8,10 +8,10 @@ angular.module('myApp.reports', ['ngRoute', 'authentication-factory', 'locomotiv
     });
 }])
 
-.controller('AllReportsCtrl', ['$scope', 'LocomotiveReport', function($scope, LocomotiveReport) {
-  $scope.locomotiveReports = LocomotiveReport.Reports;
+.controller('AllReportsCtrl', function($scope, LocomotiveReport, uiGmapIsReady) {
+  $scope.locomotiveReports = [];
 
-  LocomotiveReport.GetAllReports();
+  //LocomotiveReport.GetAllReports();
 
   $scope.deleteReport = function(reportId) {
         reportService.deleteReport(reportId).
@@ -73,4 +73,30 @@ angular.module('myApp.reports', ['ngRoute', 'authentication-factory', 'locomotiv
 
     }
 
-}]);
+    uiGmapIsReady
+           .promise()
+           .then(function(map) {
+             LocomotiveReport
+               .GetAllReports()
+               .then(function(reports) {
+                 $scope.locomotiveReports = reports;
+             });
+         });
+  
+  $scope.map = {
+          center: {
+            latitude: '40.1451',
+            longitude: '-99.6680'
+          },
+          zoom: 4,
+          markerEvents: {
+            mouseover:function(marker, eventName, model, args) {
+              
+            },            
+            mouseout:function(marker, eventName, model, args) {
+              
+            }
+          }
+        };
+  
+});

@@ -89,7 +89,13 @@ angular.module('locomotive-factory', ['firebase'])
 			if (r_snapshot.val() !== null) {
 				var tempTable = [];
 				for (var p in Object.keys(r_snapshot.val())) {
-					reportsByLocomotiveNumber.push(r_snapshot.val()[Object.keys(r_snapshot.val())[p]]);
+          var report = r_snapshot.val()[Object.keys(r_snapshot.val())[p]];
+          report.id = Object.keys(r_snapshot.val())[p];
+          report.options = {
+									labelContent: report.address,
+									labelClass: 'marker-label'
+								};
+					reportsByLocomotiveNumber.push(report);
 				}
 
 				reportsByLocomotiveNumber.sort(function(a, b) {

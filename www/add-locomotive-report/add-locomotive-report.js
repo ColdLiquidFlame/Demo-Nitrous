@@ -4,15 +4,26 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
 
 .config(
   function($routeProvider, uiGmapGoogleMapApiProvider, GoogleApiKey, $datepickerProvider) {
-    $routeProvider.when('/reports/new', {
-      controller: 'LocomotiveReportNewCtrl',
-      templateUrl: 'add-locomotive-report/add-locomotive-report.html',
-      resolve: {
-        "currentAuth": function(Auth, $location) {
-            return Auth.$requireAuth();
-          }
-      }
+    $routeProvider
+      .when('/reports/new', {
+        controller: 'LocomotiveReportNewCtrl',
+        templateUrl: 'add-locomotive-report/add-locomotive-report.html',
+        resolve: {
+          "currentAuth": function(Auth, $location) {
+              return Auth.$requireAuth();
+            }
+        }
+      })
+      .when('/:locomotiveNumber/reports/new', {
+        controller: 'LocomotiveReportNewCtrl',
+        templateUrl: 'add-locomotive-report/add-locomotive-report.html',
+        resolve: {
+          "currentAuth": function(Auth, $location) {
+              return Auth.$requireAuth();
+            }
+        }
     });
+    
     uiGmapGoogleMapApiProvider.configure({
       key: GoogleApiKey,
       v: '3.19'
@@ -25,13 +36,17 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
 )
 
 .controller('LocomotiveReportNewCtrl',
-  function($scope, $location, $window, LocomotiveReport, uiGmapIsReady, GeoCode, currentAuth, Auth) {
+  function($scope, $location, $window, LocomotiveReport, uiGmapIsReady, GeoCode, currentAuth, Auth, $routeParams) {
     Auth.$onAuth(function(authData) {
       if (!authData) {
         returnToReportsPage();
       }
     });
     
+    if(angular.isDefined($routeParams.locomotiveNumber)) {
+      $scope.locomotive = $routeParams.locomotiveNumber;
+    }
+  
     $scope.locomotives = [];
     $scope.map = {
       center: {
@@ -124,7 +139,7 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
         reported: (new Date()).toJSON()
       };
       LocomotiveReport.Add(report).then(function(data) {
-        returnToReportsPage();
+        $scope.returnToReportsPage();
       });
     };
     $scope.updateMap = function() {
@@ -146,10 +161,14 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
       error(function(data) {});
     };
   
-    function returnToReportsPage() {
-      //$location.path('/reports');
-      $window.history.back();
-    }
+    $scope.returnToReportsPage = function() {
+      if(angular.isDefined($routeParams.locomotiveNumber)) {
+        $location.path('/' + $routeParams.locomotiveNumber + '/reports');
+      }
+      else {
+        $window.history.back();  
+      }
+    };
     
     LocomotiveReport.GetAllLocomotives().then(function(locomotives) {
       $scope.locomotives = locomotives;

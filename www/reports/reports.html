@@ -1,4 +1,13 @@
-<h1>Reports</h1>
+<ol class="breadcrumb">
+  <li><a href="#">Recent Reports</a></li>
+</ol>
+
+<ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.events" pan='true'>
+   <ui-gmap-markers models="locomotiveReports"
+                    coords="'location'"
+                    options="'options'"
+                    fit="true"></ui-gmap-markers>
+</ui-gmap-google-map>
 
 <table class='table table-striped'>
 	<thead>

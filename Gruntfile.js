@@ -39,11 +39,11 @@ module.exports = function(grunt) {
     },
     concat: {
       prod_js: {
-        src: ['www/assets/production.js', '**/*.js', '!e2e-tests/**/*', '!www/**/*_test.js', '!Gruntfile.js', '!server.js', '!bower_components/**/*', '!node_modules/**/*'],
+        src: ['www/assets/<%= pkg.minifiedPrefix %>.js', '**/*.js', '!e2e-tests/**/*', '!www/**/*_test.js', '!Gruntfile.js', '!server.js', '!bower_components/**/*', '!node_modules/**/*'],
         dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
       },
       prod_css: {
-        src: ['www/assets/production.css', '**/*.css'],
+        src: ['www/assets/<%= pkg.minifiedPrefix %>.css', '**/*.css'],
         dest: 'www/assets/<%= pkg.minifiedPrefix %>.css'
       }
     },
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
           keepSpecialComments: 0
         },
         files: {
-          'www/assets/<%= pkg.minifiedPrefix %>.css': ['www/assets/production.css']
+          'www/assets/<%= pkg.minifiedPrefix %>.css': ['www/assets/<%= pkg.minifiedPrefix %>.css']
         }
       }
     },

@@ -1,8 +1,19 @@
-<h1>{{ locomotiveNumber }}</h1>
 
-<a href="" ng-click="goBack()">Back</a>
 
-<table class='table table-striped'>
+<ol class="breadcrumb">
+  <li><a href="/reports">Recent Reports</a></li>
+  <li>{{ locomotiveNumber }}</li>
+</ol>
+
+<ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.events" pan='true'>
+   <ui-gmap-markers models="locomotiveReports"
+                    coords="'location'"
+                    options="'options'"
+                    events="map.markerEvents"
+                    fit="true"></ui-gmap-markers>
+</ui-gmap-google-map>
+
+<table class='table table-striped table-hover'>
 	<thead>
 		<tr>
 			<th>Date Spotted</th>
@@ -25,3 +36,5 @@
 		</tr>
 	</tbody>
 </table>
+
+<a ng-href="{{ locomotiveNumber }}/reports/new" class="btn btn-primary" ng-show="auth">Submit Report</a>

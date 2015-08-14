@@ -38,7 +38,7 @@ angular.module('myApp', ['ngRoute',
 /**** Configuration ****/
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $routeProvider.otherwise({
-    redirectTo: '/'
+    redirectTo: '/reports'
   });
 
   $locationProvider.html5Mode(true);

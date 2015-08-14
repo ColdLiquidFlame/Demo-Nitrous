@@ -1,11 +1,11 @@
 angular.module('myApp.main', ['ngRoute', 'uiGmapgoogle-maps', 'locomotive-factory'])
 
 .config(function($routeProvider) {
-  $routeProvider
-    .when('/', {
-      controller: 'MainCtrl',
-      templateUrl: 'main/main.html'
-    });
+//   $routeProvider
+//     .when('/', {
+//       controller: 'MainCtrl',
+//       templateUrl: 'main/main.html'
+//     });
 })
 
 .controller('MainCtrl', function($scope, Auth, LocomotiveReport, uiGmapIsReady) {
