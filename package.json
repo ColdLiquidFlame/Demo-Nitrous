@@ -1,6 +1,6 @@
 {
   "name": "angular_test_app",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Sample Angular JS app",
   "main": "server.js",
   "scripts": {
