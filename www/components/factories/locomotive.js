@@ -54,6 +54,9 @@ angular.module('locomotive-factory', ['firebase'])
 							for (var p in Object.keys(r_snapshot.val())) {
 								var report = r_snapshot.val()[Object.keys(r_snapshot.val())[p]];
 								report.id = Object.keys(r_snapshot.val())[p]; //p;
+                
+                report.numberOfReports = Object.keys(r_snapshot.val()).length;
+                
 								report.options = {
 									labelContent: report.locomotiveNumber,
 									labelClass: 'marker-label'

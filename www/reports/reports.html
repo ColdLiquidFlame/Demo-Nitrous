@@ -19,7 +19,7 @@
 	<tbody>
 		<tr ng-repeat="report in locomotiveReports">
 			<td>
-				<a href=/{{report.locomotiveNumber}}/reports>{{ report.locomotiveNumber }}</a>
+				<a href=/{{report.locomotiveNumber}}/reports>{{ report.locomotiveNumber }} ({{ report.numberOfReports }})</a>
 			</td>
 			<td>
 				{{ report.dateSpotted | date: 'M/dd/yyyy'}}
