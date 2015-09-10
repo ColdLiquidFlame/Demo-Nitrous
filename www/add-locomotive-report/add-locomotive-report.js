@@ -1,9 +1,9 @@
 angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-factory', 'uiGmapgoogle-maps', 'geocode-service', 'mgcrea.ngStrap.datepicker', 'mgcrea.ngStrap.typeahead'])
 
-.constant('GoogleApiKey', 'AIzaSyBvpqHEJsqyEfSgT7TcZ1MUlWrrZoRkVgE')
+//.constant('GoogleApiKey', 'AIzaSyBvpqHEJsqyEfSgT7TcZ1MUlWrrZoRkVgE')
 
 .config(
-  function($routeProvider, uiGmapGoogleMapApiProvider, GoogleApiKey, $datepickerProvider) {
+  function($routeProvider, uiGmapGoogleMapApiProvider, /*GoogleApiKey,*/ $datepickerProvider) {
     $routeProvider
       .when('/reports/new', {
         controller: 'LocomotiveReportNewCtrl',
@@ -24,10 +24,10 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
         }
     });
     
-    uiGmapGoogleMapApiProvider.configure({
-      key: GoogleApiKey,
-      v: '3.19'
-    });
+//     uiGmapGoogleMapApiProvider.configure({
+//       key: GoogleApiKey,
+//       v: '3.19'
+//     });
     angular.extend($datepickerProvider.defaults, {
       dateFormat: 'MM/dd/yyyy',
       autoclose: true

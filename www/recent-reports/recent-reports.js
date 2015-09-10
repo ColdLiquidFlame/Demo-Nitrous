@@ -1,14 +1,14 @@
-angular.module('myApp.reports', ['ngRoute', 'authentication-factory', 'locomotive-factory'])
+angular.module('myApp.recent-reports', ['ngRoute', 'authentication-factory', 'locomotive-factory'])
 
 .config(['$routeProvider', function($routeProvider) {
    $routeProvider
-    .when('/reports/all', {
-      controller: 'AllReportsCtrl',
-      templateUrl: 'reports/reports.html'
+    .when('/reports', {
+      controller: 'AllRecentReportsCtrl',
+      templateUrl: 'recent-reports/recent-reports.html'
     });
 }])
 
-.controller('AllReportsCtrl', function($scope, LocomotiveReport, uiGmapIsReady) {
+.controller('AllRecentReportsCtrl', function($scope, LocomotiveReport, uiGmapIsReady) {
   $scope.locomotiveReports = [];
 
   $scope.deleteReport = function(reportId) {
@@ -17,7 +17,6 @@ angular.module('myApp.reports', ['ngRoute', 'authentication-factory', 'locomotiv
             getAllReports();
         });
     };
-
 
     $scope.deleteSelectedReports = function() {
 
@@ -75,7 +74,7 @@ angular.module('myApp.reports', ['ngRoute', 'authentication-factory', 'locomotiv
            .promise()
            .then(function(map) {
              LocomotiveReport
-               .GetAllReports()
+               .GetAllRecentReports()
                .then(function(reports) {
                  $scope.locomotiveReports = reports;
              });

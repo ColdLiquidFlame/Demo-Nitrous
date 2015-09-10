@@ -5,6 +5,7 @@ angular.module('myApp', ['ngRoute',
   'item-service',
   'list-item-directive',
   'authentication-factory',
+  'uiGmapgoogle-maps',
   /*** Views ***/
   'myApp.main',
   'myApp.lists',
@@ -13,6 +14,7 @@ angular.module('myApp', ['ngRoute',
   'myApp.register',
   'myApp.locomotive-reports',
   'myApp.reports',
+  'myApp.recent-reports',
   'myApp.locomotive-reports-add'
 ])
 
@@ -35,11 +37,20 @@ angular.module('myApp', ['ngRoute',
   };
 }])
 
+//.constant('GoogleApiKey', 'AIzaSyBvpqHEJsqyEfSgT7TcZ1MUlWrrZoRkVgE')
+.constant('GoogleApiKey', 'AIzaSyB4g4PaWdcZcM0rEFh2DC4FJiO6MHqMAHg')
+
+
 /**** Configuration ****/
-.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+.config( function($routeProvider, $locationProvider, uiGmapGoogleMapApiProvider, GoogleApiKey) {
   $routeProvider.otherwise({
     redirectTo: '/reports'
   });
 
   $locationProvider.html5Mode(true);
-}]);
+  
+  uiGmapGoogleMapApiProvider.configure({
+      key: GoogleApiKey,
+      v: '3.19'
+    });
+});

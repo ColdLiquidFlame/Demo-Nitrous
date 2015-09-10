@@ -40,43 +40,22 @@ angular.module('locomotive-factory', ['firebase'])
 		var deferred = $q.defer();
 
 		var query = new Firebase(reportUrl);
-		query.on('value', function(snapshot) {
+		query.once('value', function(snapshot) {
 			reports.length = 0;
-			var locomotiveRef = new Firebase(locomotiveUrl).
-			once('value', function(l_snapshot) {
-				l_snapshot.forEach(function(l) {
-					query.
-					orderByChild("locomotiveNumber").
-					equalTo(l.key()).
-					once('value', function(r_snapshot) {
-						if (r_snapshot.val() !== null) {
-							var tempTable = [];
-							for (var p in Object.keys(r_snapshot.val())) {
-								var report = r_snapshot.val()[Object.keys(r_snapshot.val())[p]];
-								report.id = Object.keys(r_snapshot.val())[p]; //p;
-                
-                report.numberOfReports = Object.keys(r_snapshot.val()).length;
+							for (var p in Object.keys(snapshot.val())) {
+								var report = snapshot.val()[Object.keys(snapshot.val())[p]];
+								report.id = Object.keys(snapshot.val())[p];
                 
 								report.options = {
 									labelContent: report.locomotiveNumber,
 									labelClass: 'marker-label'
 								};
-								tempTable.push(report);
+								reports.push(report);
 							}
-							reports.push(
-								tempTable.reduce(function(a, b) {
-									var result = a.dateSpotted >= b.dateSpotted ? a : b;
-									return result;
-								})
-							);
-						}
+      
+            deferred.resolve(reports);
+            $rootScope.safeApply();
 					});
-				});
-
-				deferred.resolve(reports);
-        $rootScope.safeApply();
-			});
-		});
 
 		return deferred.promise;
 	};
@@ -135,13 +114,58 @@ angular.module('locomotive-factory', ['firebase'])
     return deferred.promise;
   };
   
+  var getAllRecentReports = function() {
+		var deferred = $q.defer();
+
+		var query = new Firebase(reportUrl);
+		query.on('value', function(snapshot) {
+			reports.length = 0;
+			var locomotiveRef = new Firebase(locomotiveUrl).
+			once('value', function(l_snapshot) {
+				l_snapshot.forEach(function(l) {
+					query.
+					orderByChild("locomotiveNumber").
+					equalTo(l.key()).
+					once('value', function(r_snapshot) {
+						if (r_snapshot.val() !== null) {
+							var tempTable = [];
+							for (var p in Object.keys(r_snapshot.val())) {
+								var report = r_snapshot.val()[Object.keys(r_snapshot.val())[p]];
+								report.id = Object.keys(r_snapshot.val())[p]; //p;
+                
+                report.numberOfReports = Object.keys(r_snapshot.val()).length;
+                
+								report.options = {
+									labelContent: report.locomotiveNumber,
+									labelClass: 'marker-label'
+								};
+								tempTable.push(report);
+							}
+							reports.push(
+								tempTable.reduce(function(a, b) {
+									var result = a.dateSpotted >= b.dateSpotted ? a : b;
+									return result;
+								})
+							);
+						}
+					});
+				});
+
+				deferred.resolve(reports);
+        $rootScope.safeApply();
+			});
+		});
+
+		return deferred.promise;
+	};
+  
 	return {
 		Add: add,
 		Update: update,
 		Remove: remove,
 		GetAllReports: getAllReports,
 		GetReportByLocomotiveNumber: getReportByLocomotiveNumber,
-		//GetReportByUserId: getReportByUserId,
+		GetAllRecentReports: getAllRecentReports,
 		Reports: reports,
 		ReportsByLocomotiveNumber: reportsByLocomotiveNumber,
     GetAllLocomotives: getAllLocomotives
