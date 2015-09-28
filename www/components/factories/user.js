@@ -1,21 +1,21 @@
-angular.module('user-factory', ['firebase'])
+angular
+  .module('user-factory', ['firebase'])
+  .factory('User', function($firebaseObject, FirebaseUrl) {
+    var ref = new Firebase(FirebaseUrl + "/users");
+    
+    var getUser = function(uid) {
+      var userRef = ref.child(uid);
+      return $firebaseObject(userRef);
+    };
 
-.factory('User', [ '$firebaseObject' , function($firebaseObject) {
-	var ref = new Firebase("https://nitrous-demo.firebaseio.com/users");
+    var updateUser = function(uid, userData){
+      var userRef = ref.child(uid);
+      userRef.set(userData);
+      return $firebaseObject(userRef);
+    };
 
-	var getUser = function(uid) {
-	    var userRef = ref.child(uid);
-	    return $firebaseObject(userRef);
-	};
-
-	var updateUser = function(uid, userData){
-        var userRef = ref.child(uid);
-        userRef.set(userData);
-        return $firebaseObject(userRef);
-	};
-
-	return {
-		GetUser: getUser,
-		UpdateUser: updateUser
-	};
-}]);
+    return {
+      GetUser: getUser,
+      UpdateUser: updateUser
+    };
+});

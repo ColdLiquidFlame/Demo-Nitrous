@@ -1,10 +1,9 @@
 angular.module('locomotive-factory', ['firebase'])
 
-.factory('LocomotiveReport', function($firebaseObject, $firebaseArray, $q, $rootScope) {
-	var baseUrl = "https://nitrous-demo.firebaseio.com/",
-		locomotiveUrl = baseUrl + "locomotives/",
-		reportUrl = baseUrl + "locomotive-reports/",
-		ref = new Firebase(baseUrl),
+.factory('LocomotiveReport', function($firebaseObject, $firebaseArray, $q, $rootScope, FirebaseUrl) {
+		var locomotiveUrl = FirebaseUrl + "/locomotives",
+		reportUrl = FirebaseUrl + "/locomotive-reports",
+		ref = new Firebase(FirebaseUrl),
 		reports = [],
 		reportsByLocomotiveNumber = [];
 
