@@ -43,14 +43,14 @@ module.exports = function(grunt) {
         dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
       },
       prod_css: {
-        src: ['www/assets/<%= pkg.minifiedPrefix %>.css', '**/*.css'],
+        src: ['www/**/*.css'],
         dest: 'www/assets/<%= pkg.minifiedPrefix %>.css'
       }
     },
     cssmin: {
       build: {
         options: {
-          keepSpecialComments: 0
+          keepSpecialComments: '*'
         },
         files: {
           'www/assets/<%= pkg.minifiedPrefix %>.css': ['www/assets/<%= pkg.minifiedPrefix %>.css']
@@ -86,14 +86,15 @@ module.exports = function(grunt) {
           min: true
         },
         files: {
-          'www/index.html': ['www/assets/<%= pkg.minifiedPrefix %>.*']
+          'www/index.html': ['bower.json',
+                             'www/assets/<%= pkg.minifiedPrefix %>.*']
         }
       }
     },
     jshint: {
       all: ['www/**/*.js', '!bower_components/**/*', '!node_modules/**/*', '!www/assets/**/*']
     },
-    ngmin: {
+    ngAnnotate: {
       prod: {
         src: ['www/assets/<%= pkg.minifiedPrefix %>.js'],
         dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
@@ -130,6 +131,9 @@ module.exports = function(grunt) {
       // options: {
       //   banner: ' /**** <%= pkg.name %> - <%= pkg.author %> ****/\n'
       // },
+      options: {
+        mangle: true
+      },
       build: {
         src: ['www/assets/<%= pkg.minifiedPrefix %>.js'],
         dest: 'www/assets/<%= pkg.minifiedPrefix %>.js'
@@ -146,17 +150,19 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-express-server');
   grunt.loadNpmTasks('grunt-injector');
-  grunt.loadNpmTasks('grunt-ngmin');
+  grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-bower-concat');
   grunt.loadNpmTasks('grunt-cache-bust');
 
   grunt.registerTask('dev', ['jshint', 'clean', 'injector:dev']);
 
-  grunt.registerTask('prod', ['jshint',
+  grunt.registerTask('prod', [
+    'jshint',
     'clean',
-    'bower_concat',
+    //'bower_concat',    
+    'concat:prod_css',
     'concat:prod_js',
-    'ngmin:prod',
+    'ngAnnotate:prod',
     'uglify',
     'cssmin',
     'copy',
