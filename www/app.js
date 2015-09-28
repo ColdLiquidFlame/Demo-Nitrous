@@ -40,8 +40,8 @@ angular.module('myApp', ['ngRoute',
 //.constant('GoogleApiKey', 'AIzaSyBvpqHEJsqyEfSgT7TcZ1MUlWrrZoRkVgE')
 .constant('GoogleApiKey', 'AIzaSyB4g4PaWdcZcM0rEFh2DC4FJiO6MHqMAHg')
 
-.constant('FirebaseUrlx', 'https://nitrous-demo.firebaseio.com')
-.constant('FirebaseUrl', 'https://locomotive.firebaseio.com') 
+.constant('FirebaseUrl', 'https://nitrous-demo.firebaseio.com')
+.constant('FirebaseUrlx', 'https://locomotive.firebaseio.com') 
 
 /**** Configuration ****/
 .config( function($routeProvider, $locationProvider, uiGmapGoogleMapApiProvider, GoogleApiKey) {
