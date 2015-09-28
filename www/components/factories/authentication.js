@@ -1,7 +1,7 @@
 angular.module('authentication-factory', ['firebase', 'user-factory'])
 
-.factory('Auth', ['$firebaseAuth', '$rootScope', '$location', 'User', function($firebaseAuth, $rootScope, $location, User) {
-  var ref = new Firebase("https://nitrous-demo.firebaseio.com/");
+.factory('Auth', function($firebaseAuth, $rootScope, $location, User, FirebaseUrl) {
+  var ref = new Firebase(FirebaseUrl);
   var auth = $firebaseAuth(ref);
 
   auth.ref = ref;
@@ -49,4 +49,4 @@ angular.module('authentication-factory', ['firebase', 'user-factory'])
   };
   
   return auth;
-}]);
+});
