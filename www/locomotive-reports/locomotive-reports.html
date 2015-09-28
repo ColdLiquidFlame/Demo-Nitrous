@@ -19,6 +19,7 @@
 		<tr>
 			<th>Date Spotted</th>
 			<th>Address</th>
+      <th>Comments</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -26,9 +27,12 @@
 			<td>
 				{{ report.dateSpotted | date: 'M/dd/yyyy'}}
 			</td>
-					<td>
-						{{ report.address }}
-					</td>
+      <td>
+        {{ report.address }}
+      </td>
+      <td>
+        {{ report.comments }}
+      </td>
 		</tr>
 		<tr ng-hide="locomotiveReports.length > 0">
 			<td colspan="3">

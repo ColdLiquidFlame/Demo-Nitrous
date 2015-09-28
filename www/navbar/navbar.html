@@ -17,12 +17,16 @@
 <!--             <li data-match-route="/reports.*"><a href="/reports">Recent Reports</a></li> -->
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li>
+        <!--<li>
               <a href="/register" ng-hide="auth" role="button">Register</a>
-            </li>
+            </li> -->
             <li ng-hide="auth" class="dropdown">
-                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">Sign In</a>
-                <ul class="dropdown-menu" role="menu" style="padding: 15px;min-width: 250px;">
+              <button type="button" class="btn btn-default navbar-btn" ng-click="loginWithGoogle()">
+                <i class="fa fa-google"></i>
+                Sign In with Google
+              </button>
+                <!--<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">Sign In</a>-->
+                <!--<ul class="dropdown-menu" role="menu" style="padding: 15px;min-width: 250px;">
                     <li>
                         <div ng-include="'www/navbar/login-password.html'"></div>
                     </li>
@@ -45,7 +49,7 @@
                             </div>
                         </div>
                     </li>
-                </ul>
+                </ul>-->
             </li>
             <li ng-show="auth" class='dropdown' >
                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">
