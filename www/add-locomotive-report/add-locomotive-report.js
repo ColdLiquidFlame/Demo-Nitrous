@@ -137,8 +137,9 @@ angular.module('myApp.locomotive-reports-add', ['ngRoute', 'authentication-facto
         address: $scope.location,
         reportedBy: currentAuth.uid,
         reported: (new Date()).toJSON(),
-        comments: $scope.comments
+        comments: $scope.comments || ''
       };
+      
       LocomotiveReport.Add(report).then(function(data) {
         $scope.returnToReportsPage();
       });
