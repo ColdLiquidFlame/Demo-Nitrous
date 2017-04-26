@@ -1,35 +1,13 @@
 {
-  "name": "Locomotive-Tracker",
-  "version": "1.2.0",
-  "description": "Log sightings of locomotives",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "author": "Chris White",
-  "dependencies": {
-    "express": "^4.12.3"
-  },
+  "name": "polymer-starter-kit",
+  "license": "BSD-3-Clause",
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "lodash": "^3.9.3",
-    "grunt-bower-concat": "^0.4.0",
-    "grunt-cache-bust": "^0.4.13",
-    "grunt-contrib-copy": "^0.8.0",
-    "grunt-contrib-cssmin": "^0.12.3",
-    "grunt-contrib-watch": "~0.6.1",
-    "time-grunt": "^1.2.0",    
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-jshint": "^0.11.2",
-    "grunt-contrib-uglify": "^0.9.1",
-    "grunt-express-server": "^0.5.1",
-    "grunt-injector": "^0.6.0",
-    "grunt-wiredep": "^2.0.0",
-    "grunt": "~0.4.5",
-    "grunt-injector": "~0.6.0"
+    "eslint": "^3.12.0",
+    "eslint-config-google": "^0.7.1",
+    "eslint-plugin-html": "^1.7.0"
   },
-  "private": true,
-  "minifiedPrefix": "production"
+  "scripts": {
+    "lint": "eslint . --ext js,html --ignore-path .gitignore",
+    "test": "npm run lint && polymer test"
+  }
 }
