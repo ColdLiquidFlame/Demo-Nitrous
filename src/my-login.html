@@ -1,0 +1,47 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+
+<dom-module id="my-login">
+    <template>
+        <firebase-app
+            api-key="AIzaSyASCKIDV9WiDmuOpHBQ_z8zFA-q9nkoZis"
+            auth-domain="nitrous-demo.firebaseapp.com"
+            database-url="https://nitrous-demo.firebaseio.com">
+        </firebase-app>
+        <firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
+        </firebase-auth>
+        <div on-click="login">
+            Sign In
+        </div>
+    </template>
+    <script>
+        class MyLogin extends Polymer.Element {
+            static get is() {
+                return "my-login";
+            }
+
+            static get properties() {
+                return {
+                    user: Object
+                };
+            }
+
+            login() {
+                this.$.auth.signInWithRedirect()
+                    .then(function(response) {
+                        debugger;
+                    }) // optionally handle a successful login})
+                    .catch(function(error) {
+                        debugger;
+                    }); // unsuccessful authentication response here});
+            }
+
+            handleError() {
+                debugger;
+            }
+        }
+
+        window.customElements.define(MyLogin.is, MyLogin);
+    </script>
+</dom-module>
