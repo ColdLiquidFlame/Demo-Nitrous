@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 
 <dom-module id="my-login">
     <template>
@@ -11,15 +12,21 @@
         </firebase-app>
         <firebase-auth 
             id="auth" 
-            user="{{user}}" 
-            provider="google" 
+            user="{{ user }}"
+            signed-in="{{ signedIn }}"  
+            provider="google"
             on-error="handleError"
             scope="profile">
         </firebase-auth>
-        <div id="login" on-click="login" hidden$="{{ user }}">
+        <firebase-document
+            path="/users/google:{{ user.providerInfo[0].uid }}"
+            data="{{ userInfo }}">
+        </firebase-document>
+
+        <div id="login" on-click="login" hidden$="{{ signedIn }}">
             Sign In
         </div>
-        <div id="logout" on-click="logout" hidden$="{{ !user }}">
+        <div id="logout" on-click="logout" hidden$="{{ !signedIn }}">
             Hello, {{ _displayName(user) }}
             Sign Out
         </div>
@@ -50,7 +57,7 @@
 
             logout() {
                 this.$.auth.signOut()
-                .then(function(response) {
+                    .then(function(response) {
                         console.log(response);
                         debugger;
                     }) // optionally handle a successful login})
@@ -65,7 +72,7 @@
             }
 
             _displayName(user) {
-                if (user === null ) return "";
+                if (user === null) return "";
 
                 return user.providerData[0].displayName;
             }
