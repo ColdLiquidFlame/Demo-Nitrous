@@ -13,7 +13,8 @@
             id="auth" 
             user="{{user}}" 
             provider="google" 
-            on-error="handleError">
+            on-error="handleError"
+            scope="profile">
         </firebase-auth>
         <div id="login" on-click="login" hidden$="{{ user }}">
             Sign In
@@ -38,15 +39,25 @@
             login() {
                 this.$.auth.signInWithPopup()
                     .then(function(response) {
+                        console.log(response);
                         debugger;
                     }) // optionally handle a successful login})
                     .catch(function(error) {
+                        console.log(response);
                         debugger;
                     }); // unsuccessful authentication response here});
             }
 
             logout() {
-                this.$.auth.signOut();
+                this.$.auth.signOut()
+                .then(function(response) {
+                        console.log(response);
+                        debugger;
+                    }) // optionally handle a successful login})
+                    .catch(function(error) {
+                        console.log(response);
+                        debugger;
+                    }); // unsuccessful authentication response here});
             }
 
             handleError() {
