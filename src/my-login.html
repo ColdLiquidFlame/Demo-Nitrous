@@ -15,10 +15,11 @@
             provider="google" 
             on-error="handleError">
         </firebase-auth>
-        <div id="login" on-click="login">
+        <div id="login" on-click="login" hidden$="{{ user }}">
             Sign In
         </div>
-        <div id="logout" on-click="logout">
+        <div id="logout" on-click="logout" hidden$="{{ !user }}">
+            Hello, {{ _displayName(user) }}
             Sign Out
         </div>
     </template>
@@ -50,6 +51,12 @@
 
             handleError() {
                 debugger;
+            }
+
+            _displayName(user) {
+                if (user === null ) return "";
+
+                return user.providerData[0].displayName;
             }
         }
 
