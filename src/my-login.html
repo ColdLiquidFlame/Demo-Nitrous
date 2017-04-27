@@ -5,14 +5,21 @@
 <dom-module id="my-login">
     <template>
         <firebase-app
-            api-key="AIzaSyASCKIDV9WiDmuOpHBQ_z8zFA-q9nkoZis"
+            api-key="AIzaSyBOR71nQRqGbAIIX9h7aB783T1CVteifS0"
             auth-domain="nitrous-demo.firebaseapp.com"
             database-url="https://nitrous-demo.firebaseio.com">
         </firebase-app>
-        <firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
+        <firebase-auth 
+            id="auth" 
+            user="{{user}}" 
+            provider="google" 
+            on-error="handleError">
         </firebase-auth>
-        <div on-click="login">
+        <div id="login" on-click="login">
             Sign In
+        </div>
+        <div id="logout" on-click="logout">
+            Sign Out
         </div>
     </template>
     <script>
@@ -28,13 +35,17 @@
             }
 
             login() {
-                this.$.auth.signInWithRedirect()
+                this.$.auth.signInWithPopup()
                     .then(function(response) {
                         debugger;
                     }) // optionally handle a successful login})
                     .catch(function(error) {
                         debugger;
                     }); // unsuccessful authentication response here});
+            }
+
+            logout() {
+                this.$.auth.signOut();
             }
 
             handleError() {
