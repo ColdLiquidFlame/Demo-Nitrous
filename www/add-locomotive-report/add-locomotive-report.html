@@ -1,0 +1,50 @@
+<h1>Submit Report</h1>
+<form name='form' novalidate>
+    <div class="form-group" ng-class="{ 'has-error': (form.$submitted || form.dateSpotted.$touched) && (form.dateSpotted.$error.required) }">
+        <label class="control-label" for="dateSpotted">Train was spotted</label>
+        <div class="input-group input-append date">
+            <input type="text" id="dateSpotted" name="dateSpotted" placeholder="Enter date train was spotted" class="form-control" required
+                   ng-model="dateSpotted" 
+                   data-max-date="today"
+                   bs-datepicker>
+            <span class="input-group-addon">
+            <label for="dateSpotted">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </label>
+            </span>
+        </div>
+        <div ng-messages="form.dateSpotted.$error" ng-if="form.dateSpotted.$touched">
+            <div g-message when="required" class="help-block">Date of train spotting is required.</div>
+        </div>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': (form.$submitted || form.locomotive.$touched) && (form.locomotive.$error.required) }">
+        <label class="control-label" for="locomotive">Locomotive Number</label>
+        <input id="locomotive" name="locomotive" type="text"  class="form-control" placeholder="Enter Locomotive Number" required
+               ng-model='locomotive' 
+               data-watch-options="true"
+               data-min-length="0"
+               bs-options="locomotive as locomotive.name for locomotive in locomotives" 
+               bs-typeahead >
+        <div ng-messages="form.locomotiveNumber.$error" ng-if="form.locomotiveNumber.$touched">
+            <div ng-message="required" class="help-block">Locomotive Number is required.</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="location">Location</label>
+        <input id="location" type="text" ng-model='location' ng-blur="updateMap()" class="form-control" placeholder="Enter location" required>
+        <div ng-messages="form.location.$error" ng-if="form.location.$touched">
+            <div ng-message="required" class="help-block">Location is required.</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.events" pan='true'>
+        <ui-gmap-marker idKey='marker.id' coords='marker.coords' options="marker.options" events="marker.events"></ui-gmap-marker>
+        </ui-gmap-google-map>
+    </div>
+    <div class="form-group">
+        <label for="comments">Comments</label>
+        <textarea id="comments" ng-model='comments' class="form-control" placeholder="Enter comments" rows="3" ></textarea>
+    </div>
+    <button ng-click="submitReport(form)" type="submit" class="btn btn-primary" ng-disabled="form.$invalid">Submit</button>
+    <a ng-click="returnToReportsPage()" class="btn btn-default">Cancel</a>
+</form>

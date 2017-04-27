@@ -1,0 +1,26 @@
+<h3><span class="text-danger" ng-show="errorMessage">{{ errorMessage }}</span></h3>
+<form ng-submit="loginWithPassword()" novalidate>
+  <div class="form-group">
+    <label for="username">Email</label>
+    <input id="username" type="email" class="form-control" ng-model="user.email">
+  </div>  
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input id="password" type="password" class="form-control" ng-model="user.password">
+  </div>
+  <button type="submit" class="btn btn-success">Login</button>
+  <a href="/register" class="btn btn-primary">Register</a>
+</form>
+
+<hr />
+
+<button type="button" class="btn btn-danger" ng-click="loginWithGoogle()">
+  <i class="fa fa-google"></i>
+  Google
+</button>
+<button type="button" class="btn btn-primary" ng-click="loginWithFacebook()">
+  <i class="fa fa-facebook"></i>
+  Facebook
+</button>
+
+

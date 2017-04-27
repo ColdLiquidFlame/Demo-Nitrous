@@ -1,0 +1,73 @@
+<nav class="navbar navbar-default"  ng-controller="NavBarCtrl" bs-navbar>
+    <!-- Mobile View -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed"
+        data-toggle="collapse"
+        data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="nav navbar-nav">
+<!--             <li data-match-route="/$"><a href="/main">Home</a></li> -->
+            <!--     <li ng-class="{active: navbar.lists}" ng-show="auth"><a href="/lists">Lists</a></li> -->
+<!--             <li data-match-route="/reports.*"><a href="/reports">Recent Reports</a></li> -->
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+        <!--<li>
+              <a href="/register" ng-hide="auth" role="button">Register</a>
+            </li> -->
+            <li ng-hide="auth" class="dropdown">
+              <button type="button" class="btn btn-default navbar-btn" ng-click="loginWithGoogle()">
+                <i class="fa fa-google"></i>
+                Sign In with Google
+              </button>
+                <!--<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">Sign In</a>-->
+                <!--<ul class="dropdown-menu" role="menu" style="padding: 15px;min-width: 250px;">
+                    <li>
+                        <div ng-include="'www/navbar/login-password.html'"></div>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-danger btn-block" ng-click="loginWithGoogle()">
+                                    <i class="fa fa-google"></i>
+                                    Sign In with Google
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary btn-block" ng-click="loginWithFacebook()">
+                                    <i class="fa fa-facebook"></i>
+                                    Sign In with Facebook
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>-->
+            </li>
+            <li ng-show="auth" class='dropdown' >
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                <span ng-show="isPassword">{{ user.firstName + ' ' + user.lastName }}</span>
+                <span ng-show="auth.provider === 'google'">
+                <img width="25" height="25" style="border-radius: 150%" ng-src="{{ user.cachedUserProfile.picture }}" />
+                {{ user.displayName }}
+                </span>
+                <span ng-show="auth.provider === 'facebook'">
+                <img width="25" height="25" style="border-radius: 150%" ng-src="{{ auth.facebook.cachedUserProfile.picture.data.url }}" />
+                {{ user.displayName }}
+                </span>
+                <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="" ng-click="logout()">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
