@@ -2,33 +2,57 @@
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
-
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.2.2/web-animations-next-lite.min.js"></script>
 <dom-module id="my-login">
     <template>
+        <style>
+            #profile-pic {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+            }
+        </style>
         <firebase-app
-            api-key="AIzaSyBOR71nQRqGbAIIX9h7aB783T1CVteifS0"
-            auth-domain="nitrous-demo.firebaseapp.com"
-            database-url="https://nitrous-demo.firebaseio.com">
+            api-key="AIzaSyA_62We3dO7W1Zec7yq1rmM2diDnkMH7AQ"
+            auth-domain="locomotive-tracker.firebaseapp.com"
+            database-url="https://locomotive-tracker.firebaseio.com">
         </firebase-app>
         <firebase-auth 
             id="auth" 
             user="{{ user }}"
             signed-in="{{ signedIn }}"  
             provider="google"
-            on-error="handleError"
             scope="profile">
         </firebase-auth>
         <firebase-document
-            path="/users/google:{{ user.providerInfo[0].uid }}"
-            data="{{ userInfo }}">
+            id="userDoc"
+            path="/users/google:{{ user.uid }}"
+            data="{{ userInfo }}"
+            transactions-complete="handleTransactionsComplete">
         </firebase-document>
 
         <div id="login" on-click="login" hidden$="{{ signedIn }}">
-            Sign In
+            <paper-item>Sign In</paper-item>
         </div>
-        <div id="logout" on-click="logout" hidden$="{{ !signedIn }}">
-            Hello, {{ _displayName(user) }}
-            Sign Out
+        <div id="logout" hidden$="{{ !signedIn }}">
+            <paper-menu-button>
+                <paper-item slot="dropdown-trigger">
+                    <iron-image
+                        id="profile-pic"
+                        sizing="contain"
+                        src="[[user.photoURL]]">
+                    </iron-image>
+                    &nbsp;
+                    [[ user.displayName ]]
+                </paper-item>
+                <paper-listbox slot="dropdown-content">
+                    <paper-item on-click="logout">Sign Out</paper-item>
+                </paper-listbox>
+            </paper-menu-button>
         </div>
     </template>
     <script>
@@ -40,18 +64,22 @@
             static get properties() {
                 return {
                     user: Object
-                };
+                }
+            }
+
+            static get observers() {
+                return ['_userInfoChanged(userInfo, user)'];
             }
 
             login() {
+                var self = this;
                 this.$.auth.signInWithPopup()
                     .then(function(response) {
                         console.log(response);
-                        debugger;
+                        console.log("user: " + self.user);
                     }) // optionally handle a successful login})
                     .catch(function(error) {
-                        console.log(response);
-                        debugger;
+                        console.log(error);
                     }); // unsuccessful authentication response here});
             }
 
@@ -59,22 +87,28 @@
                 this.$.auth.signOut()
                     .then(function(response) {
                         console.log(response);
-                        debugger;
                     }) // optionally handle a successful login})
                     .catch(function(error) {
-                        console.log(response);
-                        debugger;
+                        console.log(error);
                     }); // unsuccessful authentication response here});
             }
 
-            handleError() {
+            handleTransactionsComplete(response) {
+                console.log("Transaction Complete");
+                console.log(response);
+
                 debugger;
             }
 
-            _displayName(user) {
-                if (user === null) return "";
+            _userInfoChanged(userInfo, user) {
+                if (userInfo === undefined || userInfo === null || user === undefined || user === null)
+                    return;
 
-                return user.providerData[0].displayName;
+                userInfo.displayName = user.displayName;
+                userInfo.email = user.email;
+                userInfo.photoURL = user.photoURL;
+
+                this.$.userDoc.saveValue("/users", user.uid);
             }
         }
 
