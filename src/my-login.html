@@ -16,23 +16,21 @@
                 border-radius: 50%;
             }
         </style>
-        <firebase-app
-            api-key="AIzaSyA_62We3dO7W1Zec7yq1rmM2diDnkMH7AQ"
-            auth-domain="locomotive-tracker.firebaseapp.com"
-            database-url="https://locomotive-tracker.firebaseio.com">
-        </firebase-app>
+        
         <firebase-auth 
             id="auth" 
             user="{{ user }}"
             signed-in="{{ signedIn }}"  
             provider="google"
-            scope="profile">
+            scope="profile"
+            app="[[ firebaseApp ]]">
         </firebase-auth>
         <firebase-document
             id="userDoc"
             path="/users/google:{{ user.uid }}"
             data="{{ userInfo }}"
-            transactions-complete="handleTransactionsComplete">
+            transactions-complete="handleTransactionsComplete"
+            app="[[ firebaseApp ]]">
         </firebase-document>
 
         <div id="login" on-click="login" hidden$="{{ signedIn }}">
@@ -63,7 +61,9 @@
 
             static get properties() {
                 return {
-                    user: Object
+                    user: Object,
+                    spot: String,
+                    firebaseApp: Object
                 }
             }
 
