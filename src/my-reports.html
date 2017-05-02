@@ -4,23 +4,43 @@
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 
+<link rel="import" href="my-reports-view.html">
+<link rel="import" href="my-new-report.html">
+
 <dom-module id="my-reports">
     <template>
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
         
-        <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-            <reports-view name="reports"></eports-view>
-            <new-report-view name="new-report"></new-report-view>
+        <iron-pages selected="[[subroute.path]]" attr-for-selected="name" fallback-selection="view404" role="main">
+            <my-reports-view 
+                name=""
+                firebase-app="{{ firebaseApp }}">
+            </my-reports-view>
+            <my-new-report 
+                name="/new"
+                firebase-app="{{ firebaseApp }}">
+            </my-new-report>
         </iron-pages>
-
-        <h2>My Reports</h2>
-        <h4>Shell</h4>
 
     </template>
     <script>
         class MyReports extends Polymer.Element {
-            static get is() { return "my-reports"; }
+            static get is() {
+                return "my-reports";
+            }
+
+            static get observers() {
+                return [
+                    '_routeChanged(route, routeData, subroute)'
+                ];
+            }
+
+            _routeChanged(route, routeData, subroute) {
+                console.debug("route: ", route);
+                console.debug("routeData: ", routeData);
+                console.debug("subroute: ", subroute);
+            }
         }
 
         window.customElements.define(MyReports.is, MyReports);

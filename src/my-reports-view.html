@@ -1,0 +1,26 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-reports-view">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 10px;
+            }   
+        </style>
+        <paper-card heading="Reports">
+
+        </paper-card>
+    </template>
+    <script>
+        class MyReportsView extends Polymer.Element {
+            static get is() {
+                return "my-reports-view";
+            }
+        }
+
+        window.customElements.define(MyReportsView.is, MyReportsView);
+    </script>
+</dom-module>

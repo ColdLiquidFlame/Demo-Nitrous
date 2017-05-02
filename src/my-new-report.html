@@ -1,0 +1,60 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-new-report">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 10px;
+            }            
+        </style>
+        <paper-card heading="Submit Report">
+            <div class="card-content">
+                <paper-input 
+                    label="Locomotive Number" 
+                    type="text"
+                    auto-validate
+                    required
+                    error-message="Field cannot be blank">
+                </paper-input>
+                <paper-input 
+                    label="Location"
+                    type="text"
+                    auto-validate
+                    required
+                    error-message="Field cannot be blank">
+                </paper-input>
+                <paper-textarea label="Comments"></paper-textarea>
+            </div>
+        </paper-card>
+    </template>
+    <script>
+        class MyNewReport extends Polymer.Element {
+            static get is() {
+                return "my-new-report";
+            }
+
+            static get properties() {
+                return {
+                    firebaseApp: Object,
+                    report: {
+                        type: Object,
+                        value: function() {
+                            return {
+                                locomotiveNumber: "",
+                                location: "",
+                                comments: ""
+                            }
+                        }
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(MyNewReport.is, MyNewReport);
+    </script>
+</dom-module>
