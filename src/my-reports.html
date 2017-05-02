@@ -1,0 +1,28 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+
+<dom-module id="my-reports">
+    <template>
+        <app-location route="{{route}}"></app-location>
+        <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+        
+        <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
+            <reports-view name="reports"></eports-view>
+            <new-report-view name="new-report"></new-report-view>
+        </iron-pages>
+
+        <h2>My Reports</h2>
+        <h4>Shell</h4>
+
+    </template>
+    <script>
+        class MyReports extends Polymer.Element {
+            static get is() { return "my-reports"; }
+        }
+
+        window.customElements.define(MyReports.is, MyReports);
+    </script>
+</dom-module>
