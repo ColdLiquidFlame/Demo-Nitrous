@@ -29,18 +29,6 @@
             static get is() {
                 return "my-reports";
             }
-
-            static get observers() {
-                return [
-                    '_routeChanged(route, routeData, subroute)'
-                ];
-            }
-
-            _routeChanged(route, routeData, subroute) {
-                console.debug("route: ", route);
-                console.debug("routeData: ", routeData);
-                console.debug("subroute: ", subroute);
-            }
         }
 
         window.customElements.define(MyReports.is, MyReports);

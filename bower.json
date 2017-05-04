@@ -26,7 +26,8 @@
     "paper-card": "PolymerElements/paper-card#2.0-preview",
     "paper-input": "PolymerElements/paper-input#2.0-preview",
     "google-apis": "GoogleWebComponents/google-apis#2.0-preview",
-    "google-map": "GoogleWebComponents/google-map#^1.2.0"
+    "google-map": "https://github.com/GoogleWebComponents/google-map.git#master",
+    "geo-location": "ebidel/geo-location#^1.0.6"
   },
   "devDependencies": {
     "web-component-tester": "6.0.0-prerelease.5"

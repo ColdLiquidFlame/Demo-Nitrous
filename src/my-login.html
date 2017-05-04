@@ -23,15 +23,14 @@
             signed-in="{{ signedIn }}"  
             provider="google"
             scope="profile"
-            app="[[ firebaseApp ]]">
-        </firebase-auth>
+            app="[[ firebaseApp ]]"></firebase-auth>
+
         <firebase-document
             id="userDoc"
             path="/users/google:{{ user.uid }}"
             data="{{ userInfo }}"
             transactions-complete="handleTransactionsComplete"
-            app="[[ firebaseApp ]]">
-        </firebase-document>
+            app="[[ firebaseApp ]]"></firebase-document>
 
         <div id="login" on-click="login" hidden$="{{ signedIn }}">
             <paper-item>Sign In</paper-item>
@@ -63,7 +62,12 @@
                 return {
                     user: Object,
                     spot: String,
-                    firebaseApp: Object
+                    firebaseApp: Object,
+                    signedIn: {
+                        type: Boolean,
+                        notify: true,
+                        reflectToAttribute: true
+                    }
                 }
             }
 
