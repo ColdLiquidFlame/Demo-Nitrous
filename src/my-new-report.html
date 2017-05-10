@@ -2,7 +2,7 @@
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
-<link rel="import" href="../bower_components/google-apis/google-js-api.html">
+<link rel="import" href="../bower_components/google-apis/google-maps-api.html">
 <link rel="import" href="../bower_components/google-map/google-map.html">
 <link rel="import" href="../bower_components/geo-location/geo-location.html">
 <link rel="import" href="shared-styles.html">
@@ -17,6 +17,7 @@
             
             google-map {
                 height: 300px;
+                margin-top: 1em;
             }
         </style>
 
@@ -34,19 +35,20 @@
                
                <geo-location latitude="{{ lat }}" longitude="{{ lng }}"></geo-location>
 
-               <google-js-api
+               <google-maps-api
                     id="geocoding"
                     name="geocoding"
-                    on-google-api-load="_handleGoogleApiLoad"                               
-                    on-google-api-load-error="_handleGoogleApiLoadError"                               
-                ></google-js-api>
+                    api-key="[[ apiKey ]]"
+                    on-api-load="_handleGoogleApiLoad">
+                </google-maps-api>
 
                <google-map id="map"
                     fit-to-markers
-                    api-key="AIzaSyA_62We3dO7W1Zec7yq1rmM2diDnkMH7AQ"
+                    api-key="[[ apiKey ]]"
                     latitude="{{ lat }}" 
                     longitude="{{ lng }}" 
-                    map="{{ map }}">
+                    map="{{ map }}"
+                    zoom="18">
                    <google-map-marker
                         map="{{ map }}" 
                         latitude="{{ lat }}" 
@@ -59,13 +61,23 @@
                     type="text"
                     auto-validate
                     required
-                    error-message="Field cannot be blank">
+                    error-message="Field cannot be blank"
+                    value="{{ location::input }}">
                 </paper-input>
 
                 <paper-textarea label="Comments"></paper-textarea>
             
             </div>
             
+        </paper-card>
+
+        <paper-card>
+            <div class="card-content">
+                <div>Lat: {{ lat }}</div>
+                <div>Lng: {{ lng }}</div>
+                <div>Zoom: {{ zoom }}</div>
+                <div>Location: {{ location }}</div>
+            </div>
         </paper-card>
     </template>
     <script>
@@ -76,7 +88,14 @@
 
             static get properties() {
                 return {
+                    apiKey: {
+                        type: String,
+                        readOnly: true,
+                        value: "AIzaSyA_62We3dO7W1Zec7yq1rmM2diDnkMH7AQ"
+                    },
+                    mapApi: Object,
                     firebaseApp: Object,
+                    location: String,
                     report: {
                         type: Object,
                         value: function() {
@@ -90,12 +109,42 @@
                 };
             }
 
+            static get observers() {
+                return [
+                    '_reverseGeocode(lat, lng)'
+                ]
+            }
+
+            // static get behaviors() {
+            //     return [
+            //         Polymer.IronJsonpLibraryBehavior
+            //     ]
+            // }
+
             _handleGoogleApiLoad(event) {
                 console.log(event)
+                this.mapApi = google.maps;
             }
 
             _handleGoogleApiLoadError(event) {
                 console.log(event)
+            }
+
+            _reverseGeocode(lat, lng) {
+                console.log(this.mapApi);
+                if (this.mapApi === undefined) return;
+
+                var geocoder = new this.$.geocoding.api.Geocoder();
+
+                var latLng = new google.maps.LatLng(lat, lng);
+
+                geocoder.geocode({location: latLng}, function(results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            this.location = results[0].formatted_address;
+                        }
+                    }
+                }.bind(this));
             }
         }
 
