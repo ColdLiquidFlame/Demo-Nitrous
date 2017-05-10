@@ -1,10 +1,15 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input-autocomplete/paper-input-autocomplete.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/google-apis/google-maps-api.html">
 <link rel="import" href="../bower_components/google-map/google-map.html">
 <link rel="import" href="../bower_components/geo-location/geo-location.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-date-picker/paper-date-picker.html">
+
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-new-report">
@@ -19,11 +24,25 @@
                 height: 300px;
                 margin-top: 1em;
             }
+
+            paper-button.save {
+                --paper-button: {
+                    background-color: var(--app-primary-color);
+                    color: white;
+                }
+            }
         </style>
 
         <paper-card heading="Submit Report">
 
             <div class="card-content">
+
+                <firebase-query
+                    id="locomotives"
+                    app="[[firebaseApp]]"
+                    path="/locomotives"
+                    data="{{ locomotives }}">
+                </firebase-query>
 
                 <paper-input 
                     label="Locomotive Number" 
@@ -33,7 +52,7 @@
                     error-message="Field cannot be blank">
                 </paper-input>
                
-               <geo-location latitude="{{ lat }}" longitude="{{ lng }}"></geo-location>
+               <geo-location latitude="{{ lat }}" longitude="{{ lng }}" idle="{{ mapReady }}"></geo-location>
 
                <google-maps-api
                     id="geocoding"
@@ -48,7 +67,7 @@
                     latitude="{{ lat }}" 
                     longitude="{{ lng }}" 
                     map="{{ map }}"
-                    zoom="18">
+                    zoom="{{ zoom }}">
                    <google-map-marker
                         map="{{ map }}" 
                         latitude="{{ lat }}" 
@@ -61,24 +80,26 @@
                     type="text"
                     auto-validate
                     required
-                    error-message="Field cannot be blank"
-                    value="{{ location::input }}">
+                    error-message="Field cannot be blank"                    
+                    value="{{ location::input }}"
+                    on-blur="_geocode">
                 </paper-input>
+
+                <paper-date-picker 
+                    is-touch
+                    date="May 10, 2017"></paper-date-picker>
 
                 <paper-textarea label="Comments"></paper-textarea>
             
             </div>
+
+            <div class="card-actions">
+                <paper-button class="save" elevation="1" raised on-tap="_handleSaveButtonClick">Save</paper-button>
+                <a href="/reports"><paper-button elevation="1" raised>Cancel</paper-button></a>
+            </div>
             
         </paper-card>
-
-        <paper-card>
-            <div class="card-content">
-                <div>Lat: {{ lat }}</div>
-                <div>Lng: {{ lng }}</div>
-                <div>Zoom: {{ zoom }}</div>
-                <div>Location: {{ location }}</div>
-            </div>
-        </paper-card>
+        
     </template>
     <script>
         class MyNewReport extends Polymer.Element {
@@ -95,35 +116,41 @@
                     },
                     mapApi: Object,
                     firebaseApp: Object,
-                    location: String,
-                    report: {
-                        type: Object,
-                        value: function() {
-                            return {
-                                locomotiveNumber: "",
-                                location: "",
-                                comments: ""
-                            }
-                        }
+                    zoom: {
+                        type: Number,
+                        value: 18
+                    },
+                    location: {
+                        type: String,
+                        notify: true
+                    },
+                    locomotiveNumber: {
+                        type: String,
+                        notify: true
+                    },
+                    comments: {
+                        type: String,
+                        notify: true
+                    },
+                    dateSpotted: {
+                        type: String,
+                        notify: true,
+                        value: "May 10, 2017"
                     }
                 };
             }
 
             static get observers() {
                 return [
-                    '_reverseGeocode(lat, lng)'
+                    '_reverseGeocode(lat, lng)',
+                    '_locomotivesDebug(locomotives)'
                 ]
             }
-
-            // static get behaviors() {
-            //     return [
-            //         Polymer.IronJsonpLibraryBehavior
-            //     ]
-            // }
 
             _handleGoogleApiLoad(event) {
                 console.log(event)
                 this.mapApi = google.maps;
+                this.mapReady = true;
             }
 
             _handleGoogleApiLoadError(event) {
@@ -131,20 +158,51 @@
             }
 
             _reverseGeocode(lat, lng) {
-                console.log(this.mapApi);
                 if (this.mapApi === undefined) return;
 
                 var geocoder = new this.$.geocoding.api.Geocoder();
 
                 var latLng = new google.maps.LatLng(lat, lng);
 
-                geocoder.geocode({location: latLng}, function(results, status) {
+                geocoder.geocode({
+                    location: latLng
+                }, function(results, status) {
                     if (status === 'OK') {
                         if (results[0]) {
                             this.location = results[0].formatted_address;
                         }
                     }
                 }.bind(this));
+            }
+
+            _geocode(address) {
+                if (this.mapApi === undefined) return;
+
+                var geocoder = new this.$.geocoding.api.Geocoder();
+
+                geocoder.geocode({
+                    address: this.location
+                }, function(results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            console.debug("addressResults=%0", results);
+                            this.location = results[0].formatted_address;
+                            let geometry = results[0].geometry;
+                            this.lat = geometry.location.lat();
+                            this.lng = geometry.location.lng();
+
+
+                        }
+                    }
+                }.bind(this));
+            }
+
+            _locomotivesDebug(locomotives) {
+                console.log("locomotives: %o", locomotives);
+            }
+
+            _handleSaveButtonClick() {
+                console.log("save button clicked");
             }
         }
 
