@@ -1,0 +1,36 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+
+<link rel="import" href="my-reports-view.html">
+<link rel="import" href="my-new-report.html">
+
+<dom-module id="my-reports">
+    <template>
+        <app-location route="{{route}}"></app-location>
+        <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+        
+        <iron-pages selected="[[subroute.path]]" attr-for-selected="name" fallback-selection="view404" role="main">
+            <my-reports-view 
+                name=""
+                firebase-app="{{ firebaseApp }}">
+            </my-reports-view>
+            <my-new-report 
+                name="/new"
+                firebase-app="{{ firebaseApp }}">
+            </my-new-report>
+        </iron-pages>
+
+    </template>
+    <script>
+        class MyReports extends Polymer.Element {
+            static get is() {
+                return "my-reports";
+            }
+        }
+
+        window.customElements.define(MyReports.is, MyReports);
+    </script>
+</dom-module>

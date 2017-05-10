@@ -7,7 +7,7 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
+        "destination": "/build/default/index.html"
       }
     ]
   }
