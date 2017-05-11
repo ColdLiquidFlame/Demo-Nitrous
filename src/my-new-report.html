@@ -8,7 +8,9 @@
 <link rel="import" href="../bower_components/geo-location/geo-location.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-date-picker/paper-date-picker.html">
+<link rel="import" href="../bower_components/isw-dialog/isw-dialog-remote.html">
 
 <link rel="import" href="shared-styles.html">
 
@@ -43,6 +45,32 @@
                     path="/locomotives"
                     data="{{ locomotives }}">
                 </firebase-query>
+                
+                <h1>{{ dateFormat(date, 'LL') }}</h1>
+                
+                <paper-input 
+                    label="Date Spotted" 
+                    type="text"
+                    auto-validate
+                    required
+                    error-message="Field cannot be blank"
+                    on-tap="showDialog"
+                    value="{{ dateFormat(date, 'LL') }}">
+                </paper-input> 
+                <!--<isw-dialog id="dialog" class="paper-date-picker-dialog" modal on-iron-overlay-closed="dismissDialog" on-iron-overlay-opened="patchOverlay">
+                    <paper-date-picker id="picker" date="[[date]]"></paper-date-picker>
+                    <div class="buttons">
+                    <paper-button dialog-dismiss>Cancel</paper-button>
+                    <paper-button dialog-confirm>OK</paper-button>
+                    </div>
+                </isw-dialog>-->
+                <isw-dialog-remote
+					id="remote"
+					dialog="dialog"
+					data="[[_data]]"
+					on-iron-overlay-canceled="_canceled"
+					on-iron-overlay-closed="_closed"
+					on-iron-overlay-opened="_opened"></isw-dialog-remote>
 
                 <paper-input 
                     label="Locomotive Number" 
@@ -50,6 +78,16 @@
                     auto-validate
                     required
                     error-message="Field cannot be blank">
+                </paper-input>                
+
+                <paper-input 
+                    label="Location"
+                    type="text"
+                    auto-validate
+                    required
+                    error-message="Field cannot be blank"                    
+                    value="{{ location::input }}"
+                    on-blur="_geocode">
                 </paper-input>
                
                <geo-location latitude="{{ lat }}" longitude="{{ lng }}" idle="{{ mapReady }}"></geo-location>
@@ -74,20 +112,6 @@
                         longitude="{{ lng }}" 
                         draggable="true"></google-map-marker>
                 </google-map>
-
-                <paper-input 
-                    label="Location"
-                    type="text"
-                    auto-validate
-                    required
-                    error-message="Field cannot be blank"                    
-                    value="{{ location::input }}"
-                    on-blur="_geocode">
-                </paper-input>
-
-                <paper-date-picker 
-                    is-touch
-                    date="May 10, 2017"></paper-date-picker>
 
                 <paper-textarea label="Comments"></paper-textarea>
             
@@ -136,6 +160,10 @@
                         type: String,
                         notify: true,
                         value: "May 10, 2017"
+                    },
+                    date: {
+                        type: Date,
+                        value: new Date()
                     }
                 };
             }
@@ -203,6 +231,38 @@
 
             _handleSaveButtonClick() {
                 console.log("save button clicked");
+            }
+
+
+            dateFormat(date, format) {
+                return moment(date).format(format);
+            }
+
+            showDialog() {
+                //this.$.dialog.toggle();
+            }
+
+            dismissDialog(event) {
+                if (event.detail.confirmed) {
+                    scope.date = scope.$.picker.date;
+                }
+            }
+
+            // https://github.com/PolymerElements/paper-dialog/issues/7
+            patchOverlay(e) {
+                const root = Polymer.dom(this.root);
+                const first = root.firstChild;
+                Polymer.dom(myElement.root)
+                    .querySelectorAll('paper-dialog')
+                    .reverse()
+                    .forEach(dialog => root.insertBefore(dialog, first));
+            }
+
+            open() {
+                this.$.dialogRemote.open();
+            }
+            _closed(event) {
+                console.log(event);
             }
         }
 
