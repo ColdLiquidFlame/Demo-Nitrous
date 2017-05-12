@@ -10,7 +10,9 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-date-picker/paper-date-picker.html">
+
 <link rel="import" href="../bower_components/isw-dialog/isw-dialog-remote.html">
+<link rel="import" href="../bower_components/isw-dialog/isw-dialog.html">
 
 <link rel="import" href="shared-styles.html">
 
@@ -45,9 +47,7 @@
                     path="/locomotives"
                     data="{{ locomotives }}">
                 </firebase-query>
-                
-                <h1>{{ dateFormat(date, 'LL') }}</h1>
-                
+                             
                 <paper-input 
                     label="Date Spotted" 
                     type="text"
@@ -55,22 +55,16 @@
                     required
                     error-message="Field cannot be blank"
                     on-tap="showDialog"
-                    value="{{ dateFormat(date, 'LL') }}">
+                    value="{{ dateFormat(date, 'LL') }}"
+                    readonly>
                 </paper-input> 
-                <!--<isw-dialog id="dialog" class="paper-date-picker-dialog" modal on-iron-overlay-closed="dismissDialog" on-iron-overlay-opened="patchOverlay">
-                    <paper-date-picker id="picker" date="[[date]]"></paper-date-picker>
-                    <div class="buttons">
-                    <paper-button dialog-dismiss>Cancel</paper-button>
-                    <paper-button dialog-confirm>OK</paper-button>
-                    </div>
-                </isw-dialog>-->
+
                 <isw-dialog-remote
 					id="remote"
 					dialog="dialog"
-					data="[[_data]]"
+					data="{{ data }}"
 					on-iron-overlay-canceled="_canceled"
-					on-iron-overlay-closed="_closed"
-					on-iron-overlay-opened="_opened"></isw-dialog-remote>
+                    on-iron-overlay-closed="_closed"></isw-dialog-remote>
 
                 <paper-input 
                     label="Locomotive Number" 
@@ -164,6 +158,13 @@
                     date: {
                         type: Date,
                         value: new Date()
+                    },
+                    data: {
+                        type: Object,
+                        value: {
+                            date: new Date()
+                        },
+                        notify: true
                     }
                 };
             }
@@ -171,7 +172,8 @@
             static get observers() {
                 return [
                     '_reverseGeocode(lat, lng)',
-                    '_locomotivesDebug(locomotives)'
+                    '_locomotivesDebug(locomotives)',
+                    '_syncDate(data.date)'
                 ]
             }
 
@@ -240,6 +242,7 @@
 
             showDialog() {
                 //this.$.dialog.toggle();
+                this.$.remote.open();
             }
 
             dismissDialog(event) {
@@ -259,10 +262,15 @@
             }
 
             open() {
-                this.$.dialogRemote.open();
+                this.$.remote.open();
             }
             _closed(event) {
                 console.log(event);
+                this.date = this.data.date;
+            }
+
+            _syncDate(date) {
+                this.date = date;
             }
         }
 

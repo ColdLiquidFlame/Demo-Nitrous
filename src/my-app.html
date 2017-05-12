@@ -23,7 +23,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="my-login.html">
-<link rel="import" href="../bower_components/isw-dialog/isw-dialog.html">
 
 <dom-module id="my-app">
     <template>
@@ -75,13 +74,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <isw-dialog id="dialog" name="dialog" class="paper-date-picker-dialog" modal  data="{{_data}}">
-                    <paper-date-picker id="picker" date="[[date]]"></paper-date-picker>
-                    <div class="buttons">
-                    <paper-button dialog-dismiss>Cancel</paper-button>
-                    <paper-button dialog-confirm>OK</paper-button>
-                    </div>
-                </isw-dialog>
+    
 
     <app-location route="{{route}}"></app-location>
     <app-route

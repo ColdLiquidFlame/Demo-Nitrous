@@ -1,0 +1,34 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/isw-dialog/isw-dialog.html">
+<link rel="import" href="../bower_components/paper-date-picker/paper-date-picker.html">
+
+<dom-module id="my-remote-datepicker">
+    <template>
+        <isw-dialog id="dialog" name="dialog" class="paper-date-picker-dialog" modal data="{{ data }}">
+            <paper-date-picker id="picker" date="{{ data.date }}"></paper-date-picker>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Cancel</paper-button>
+                <paper-button dialog-confirm>OK</paper-button>
+            </div>
+        </isw-dialog>
+    </template>
+    <script>
+        class MyRemoteDatePicker extends Polymer.Element {
+            static get is() {
+                return "my-remote-datepicker"
+            }
+
+            // static get properties() {
+            //     return {
+            //         date: {
+            //             type: Date,
+            //             value: new Date()
+            //         }
+            //     }
+            // }
+        }
+
+        window.customElements.define(MyRemoteDatePicker.is, MyRemoteDatePicker);
+    </script>
+</dom-module>
