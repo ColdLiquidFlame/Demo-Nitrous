@@ -10,9 +10,8 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-date-picker/paper-date-picker.html">
-
 <link rel="import" href="../bower_components/isw-dialog/isw-dialog-remote.html">
-<link rel="import" href="../bower_components/isw-dialog/isw-dialog.html">
+<link rel="import" href="my-icons.html">
 
 <link rel="import" href="shared-styles.html">
 
@@ -54,9 +53,12 @@
                     auto-validate
                     required
                     error-message="Field cannot be blank"
-                    on-tap="showDialog"
+                    on-tap="_open"
                     value="{{ dateFormat(dateSpotted, 'LL') }}"
                     readonly>
+                    
+                    <iron-icon icon="my-icons:today" slot="suffix"></iron-icon>
+                    
                 </paper-input> 
 
                 <isw-dialog-remote
@@ -82,9 +84,11 @@
                     error-message="Field cannot be blank"                    
                     value="{{ location::input }}"
                     on-blur="_geocode">
+                    <paper-icon-button icon="my-icons:add-location" slot="suffix"
+                    on-tap="_toggleMap"></paper-button-icon>
                 </paper-input>
                
-               <geo-location latitude="{{ lat }}" longitude="{{ lng }}" idle="{{ mapReady }}"></geo-location>
+               <geo-location latitude="{{ deviceLat }}" longitude="{{ deviceLng }}"></geo-location>
 
                <google-maps-api
                     id="geocoding"
@@ -93,6 +97,8 @@
                     on-api-load="_handleGoogleApiLoad">
                 </google-maps-api>
 
+                <!--<div >-->
+                <div hidden$="{{ mapHidden }}">
                <google-map id="map"
                     fit-to-markers
                     api-key="[[ apiKey ]]"
@@ -106,6 +112,7 @@
                         longitude="{{ lng }}" 
                         draggable="true"></google-map-marker>
                 </google-map>
+                </div>
 
                 <paper-textarea label="Comments"></paper-textarea>
             
@@ -134,6 +141,10 @@
                     },
                     mapApi: Object,
                     mapReady: Boolean,
+                    mapHidden: {
+                        type: Boolean,
+                        value: true
+                    },
                     firebaseApp: Object,
                     zoom: {
                         type: Number,
@@ -162,23 +173,30 @@
                             date: new Date()
                         },
                         notify: true
-                    }
+                    },
+                    lng: Number,
+                    lat: Number,
+                    deviceLng: Number,
+                    deviceLat: Number
                 };
             }
 
             static get observers() {
                 return [
-                    '_reverseGeocode(lat, lng)'
+                    '_reverseGeocode(lat, lng, mapReady, mapApi)'
                 ]
             }
 
             _handleGoogleApiLoad(event) {
                 this.mapApi = google.maps;
                 this.mapReady = true;
+                this.lng = this.deviceLng;
+                this.lat = this.deviceLat;
             }
 
-            _reverseGeocode(lat, lng) {
-                if (this.mapApi === undefined) return;
+            _reverseGeocode(lat, lng, mapReady, mapApi) {
+                //if (this.mapApi === undefined) return;
+                if (!mapReady) return;
 
                 var geocoder = new this.$.geocoding.api.Geocoder();
 
@@ -195,6 +213,13 @@
                 }.bind(this));
             }
 
+            _toggleMap() {
+                this.mapHidden = !this.mapHidden;
+                if (!this.mapHidden) {
+                    this.$.map.resize();
+                }
+            }
+
             _geocode(address) {
                 if (this.mapApi === undefined) return;
 
@@ -205,26 +230,18 @@
                 }, function(results, status) {
                     if (status === 'OK') {
                         if (results[0]) {
-                            console.debug("addressResults=%0", results);
                             this.location = results[0].formatted_address;
                             let geometry = results[0].geometry;
                             this.lat = geometry.location.lat();
                             this.lng = geometry.location.lng();
-
-
                         }
                     }
                 }.bind(this));
             }
 
-            _locomotivesDebug(locomotives) {
-                console.log("locomotives: %o", locomotives);
-            }
-
             _handleSaveButtonClick() {
                 console.log("save button clicked");
             }
-
 
             dateFormat(date, format) {
                 return moment(date).format(format);
