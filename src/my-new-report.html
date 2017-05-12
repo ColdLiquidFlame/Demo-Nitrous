@@ -6,11 +6,16 @@
 <link rel="import" href="../bower_components/google-apis/google-maps-api.html">
 <link rel="import" href="../bower_components/google-map/google-map.html">
 <link rel="import" href="../bower_components/geo-location/geo-location.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-date-picker/paper-date-picker.html">
 <link rel="import" href="../bower_components/isw-dialog/isw-dialog-remote.html">
+<link rel="import" href="../bower_components/paper-autocomplete/paper-autocomplete.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="my-icons.html">
 
 <link rel="import" href="shared-styles.html">
@@ -34,11 +39,28 @@
                     color: white;
                 }
             }
+
+            a {
+                text-decoration: none;
+                color: black;
+            }
         </style>
+
+        <app-location route="{{route}}"></app-location>
+        <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+
 
         <paper-card heading="Submit Report">
 
             <div class="card-content">
+
+                 <firebase-auth 
+                    id="auth" 
+                    user="{{ user }}"
+                    signed-in="{{ signedIn }}"  
+                    provider="google"
+                    scope="profile"
+                    app="[[ firebaseApp ]]"></firebase-auth>
 
                 <firebase-query
                     id="locomotives"
@@ -46,6 +68,10 @@
                     path="/locomotives"
                     data="{{ locomotives }}">
                 </firebase-query>
+
+                 <firebase-document
+                    id="report"
+                    app="[[ firebaseApp ]]"></firebase-document>
                              
                 <paper-input 
                     label="Date Spotted" 
@@ -53,11 +79,14 @@
                     auto-validate
                     required
                     error-message="Field cannot be blank"
-                    on-tap="_open"
                     value="{{ dateFormat(dateSpotted, 'LL') }}"
                     readonly>
                     
-                    <iron-icon icon="my-icons:today" slot="suffix"></iron-icon>
+                    <paper-icon-button 
+                        icon="my-icons:today" 
+                        slot="suffix" 
+                        on-tap="_open">
+                    </paper-icon-button>
                     
                 </paper-input> 
 
@@ -69,14 +98,25 @@
                     on-iron-overlay-closed="_closed"></isw-dialog-remote>
 
                 <paper-input 
+                    id="locomotive_number"
                     label="Locomotive Number" 
                     type="text"
                     auto-validate
                     required
                     error-message="Field cannot be blank">
                 </paper-input>                
+                <!--<paper-autocomplete
+                    id="locomotive_number"
+                    label="Locomotive Number" 
+                    source="[[ locomotives ]]"
+                    text-property="name"
+                    value-property="name"
+                    >-->
+                    
+                </paper-autocomplete>
 
                 <paper-input 
+                    id="location"
                     label="Location"
                     type="text"
                     auto-validate
@@ -114,13 +154,17 @@
                 </google-map>
                 </div>
 
-                <paper-textarea label="Comments"></paper-textarea>
+                <paper-textarea 
+                    id="comments" 
+                    label="Comments">
+                </paper-textarea>
             
             </div>
 
             <div class="card-actions">
                 <paper-button class="save" elevation="1" raised on-tap="_handleSaveButtonClick">Save</paper-button>
-                <a href="/reports"><paper-button elevation="1" raised>Cancel</paper-button></a>
+                
+                <paper-button elevation="1" raised on-tap="_handleCancelButtonClick">Cancel</paper-button>
             </div>
             
         </paper-card>
@@ -241,6 +285,33 @@
 
             _handleSaveButtonClick() {
                 console.log("save button clicked");
+
+                let report = {};
+                report.address = this.$.location.value;
+                report.dateSpotted = this.dateSpotted;
+
+                let location = {
+                    latitude: this.lat,
+                    longitude: this.lng
+                }
+                report.location = location;
+
+                report.locomotiveNumber = this.$.locomotive_number.value;
+                report.reported = new Date();
+                report.reportedBy = this.user.uid;
+                report.comments = this.$.comments.value;
+
+                this.$.report.data = report;
+                this.$.report.saveValue("/locomotive-reports");
+
+                this._resetPage();
+
+                this.set('subroute.path', '');
+            }
+
+            _handleCancelButtonClick() {
+                this._resetPage();
+                this.set('subroute.path', '');
             }
 
             dateFormat(date, format) {
@@ -254,6 +325,18 @@
                 if (event.detail.confirmed) {
                     this.dateSpotted = this.data.date;
                 }
+            }
+
+            _resetPage() {
+                this.mapHidden = true;
+                this.zoom = 18;
+                this.$.locomotive_number.value = null;
+                this.$.locomotive_number.invalid = false;
+                this.$.comments.value = null;
+                this.dateSpotted = new Date();
+                this.data.date = new Date();
+                this.lng = this.deviceLng;
+                this.lat = this.deviceLat;
             }
         }
 
