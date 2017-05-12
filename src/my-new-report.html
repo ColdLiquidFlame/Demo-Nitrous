@@ -55,7 +55,7 @@
                     required
                     error-message="Field cannot be blank"
                     on-tap="showDialog"
-                    value="{{ dateFormat(date, 'LL') }}"
+                    value="{{ dateFormat(dateSpotted, 'LL') }}"
                     readonly>
                 </paper-input> 
 
@@ -133,6 +133,7 @@
                         value: "AIzaSyA_62We3dO7W1Zec7yq1rmM2diDnkMH7AQ"
                     },
                     mapApi: Object,
+                    mapReady: Boolean,
                     firebaseApp: Object,
                     zoom: {
                         type: Number,
@@ -151,12 +152,8 @@
                         notify: true
                     },
                     dateSpotted: {
-                        type: String,
-                        notify: true,
-                        value: "May 10, 2017"
-                    },
-                    date: {
                         type: Date,
+                        notify: true,
                         value: new Date()
                     },
                     data: {
@@ -171,20 +168,13 @@
 
             static get observers() {
                 return [
-                    '_reverseGeocode(lat, lng)',
-                    '_locomotivesDebug(locomotives)',
-                    '_syncDate(data.date)'
+                    '_reverseGeocode(lat, lng)'
                 ]
             }
 
             _handleGoogleApiLoad(event) {
-                console.log(event)
                 this.mapApi = google.maps;
                 this.mapReady = true;
-            }
-
-            _handleGoogleApiLoadError(event) {
-                console.log(event)
             }
 
             _reverseGeocode(lat, lng) {
@@ -240,37 +230,13 @@
                 return moment(date).format(format);
             }
 
-            showDialog() {
-                //this.$.dialog.toggle();
-                this.$.remote.open();
-            }
-
-            dismissDialog(event) {
-                if (event.detail.confirmed) {
-                    scope.date = scope.$.picker.date;
-                }
-            }
-
-            // https://github.com/PolymerElements/paper-dialog/issues/7
-            patchOverlay(e) {
-                const root = Polymer.dom(this.root);
-                const first = root.firstChild;
-                Polymer.dom(myElement.root)
-                    .querySelectorAll('paper-dialog')
-                    .reverse()
-                    .forEach(dialog => root.insertBefore(dialog, first));
-            }
-
-            open() {
+            _open() {
                 this.$.remote.open();
             }
             _closed(event) {
-                console.log(event);
-                this.date = this.data.date;
-            }
-
-            _syncDate(date) {
-                this.date = date;
+                if (event.detail.confirmed) {
+                    this.dateSpotted = this.data.date;
+                }
             }
         }
 
