@@ -30,7 +30,7 @@
     "geo-location": "ebidel/geo-location#^1.0.6",
     "paper-input-autocomplete": "https://github.com/rodo1111/paper-input-autocomplete.git#^1.3.0",
     "paper-button": "polymerelements/paper-button#2.0-preview",
-    "paper-date-picker": "coldliquidflame/paper-date-picker#^1.2.0",
+    "paper-date-picker": "bendavis78/paper-date-picker#^1.2.0",
     "moment": "^2.18.1",
     "paper-dialog": "polymerelements/paper-dialog#2.0-preview",
     "iron-list": "polymerelements/iron-list#2.0-preview",

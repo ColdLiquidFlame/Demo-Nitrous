@@ -13,7 +13,7 @@
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-date-picker/paper-date-picker.html">
 <link rel="import" href="../bower_components/isw-dialog/isw-dialog-remote.html">
-<link rel="import" href="../bower_components/paper-autocomplete/paper-autocomplete.html">
+<!--<link rel="import" href="../bower_components/paper-autocomplete/paper-autocomplete.html">-->
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="my-icons.html">
@@ -47,7 +47,7 @@
         </style>
 
         <app-location route="{{route}}"></app-location>
-        <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+        <app-route route="{{route}}" pattern="/:page" tail="{{ subroute }}"></app-route>
 
 
         <paper-card heading="Submit Report">
@@ -57,9 +57,6 @@
                  <firebase-auth 
                     id="auth" 
                     user="{{ user }}"
-                    signed-in="{{ signedIn }}"  
-                    provider="google"
-                    scope="profile"
                     app="[[ firebaseApp ]]"></firebase-auth>
 
                 <firebase-query
@@ -221,7 +218,10 @@
                     lng: Number,
                     lat: Number,
                     deviceLng: Number,
-                    deviceLat: Number
+                    deviceLat: Number,
+                    user: Object,
+                    locomotives: Array,
+                    subroute: Object
                 };
             }
 
