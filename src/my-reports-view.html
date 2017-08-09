@@ -43,9 +43,9 @@
                 fit-to-markers> 
                  <template is="dom-repeat" items="[[ queryResults ]]" as="report" >
                     <google-map-marker map="{{map}}" 
-                    slot="marker"
-                    longitude="{{report.location.longitude}}" 
-                    latitude="{{report.location.latitude}}"></google-map-marker>
+                        slot="marker"
+                        longitude="{{report.location.longitude}}" 
+                        latitude="{{report.location.latitude}}"></google-map-marker>
                 </template> 
             </google-map>
         </paper-card>
