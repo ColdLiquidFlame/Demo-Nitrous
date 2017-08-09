@@ -1,5 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel='import' href='../bower_components/google-map/google-map.html'>
+<link rel='import' href='../bower_components/google-map/google-map-marker.html'>
+ <link rel='import' href='../bower_components/google-map-markerclusterer/google-map-markerclusterer.html'> 
+<link rel='import' href='../bower_components/geo-location/geo-location.html'>
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-reports-view">
@@ -9,15 +17,86 @@
                 display: block;
                 padding: 10px;
             }   
-        </style>
-        <paper-card heading="Reports">
 
+            google-map {
+                height: 300px;
+            }
+
+        </style>
+
+        <firebase-query
+            id="reports"
+            app="[[ firebaseApp ]]"
+            path="/locomotive-reports"
+            data="{{ queryResults }}">
+        </firebase-query>
+
+        <paper-card heading="Sightings">
+
+             <geo-location latitude="{{ deviceLat }}" longitude="{{ deviceLng }}"></geo-location> 
+            
+             <google-map id="map"
+                map="{{ map }}" 
+                api-key="[[apiKey]]" 
+                latitude="{{ deviceLat }}" 
+                longitude="{{ deviceLng }}"
+                fit-to-markers> 
+                 <template is="dom-repeat" items="[[ queryResults ]]" as="report" >
+                    <google-map-marker map="{{map}}" 
+                    slot="marker"
+                    longitude="{{report.location.longitude}}" 
+                    latitude="{{report.location.latitude}}"></google-map-marker>
+                </template> 
+            </google-map>
+        </paper-card>
+        <paper-card heading="Reports">
+            
+
+            <paper-listbox>
+                <template is="dom-repeat" items="{{ queryResults }}" as="report" sort="{{ reverseArray }}">
+                    <paper-item>
+                        <paper-item-body two-line>
+                            <div> [[report.locomotiveNumber]]</div>
+                            <div secondary>
+                                [[report.address]] <br />
+                                [[report.location.longitude]] - [[report.location.latitude]] <br />
+                                Date Spotted: [[report.dateSpotted]]
+                            </div>
+                        </paper-item-body>
+                    </paper-item>
+                </template>
+            </paper-listbox>
+            
         </paper-card>
     </template>
     <script>
         class MyReportsView extends Polymer.Element {
             static get is() {
                 return "my-reports-view";
+            }
+
+            static get properties() {
+                return {
+                    firebaseApp: Object,
+                    queryResults: {
+                        type: Array
+                    },
+                    apiKey: {
+                        type: String,
+                        readOnly: true,
+                        value: "AIzaSyA_62We3dO7W1Zec7yq1rmM2diDnkMH7AQ"
+                    },
+                    reversedQueryResults: Array
+                };
+            }
+
+            reverseArray(a, b) {
+                let y = new Date(a.dateSpotted),
+                    z = new Date(b.dateSpotted);
+
+                if(y > z) return -1;
+                if(y < z) return 1;
+                return 0;
             }
         }
 
