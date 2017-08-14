@@ -36,17 +36,15 @@
              <geo-location latitude="{{ deviceLat }}" longitude="{{ deviceLng }}"></geo-location> 
             
              <google-map id="map"
-                map="{{ map }}" 
+                fit-to-markers
                 api-key="[[apiKey]]" 
                 latitude="{{ deviceLat }}" 
-                longitude="{{ deviceLng }}"
-                fit-to-markers> 
-                 <template is="dom-repeat" items="[[ queryResults ]]" as="report" >
-                    <google-map-marker map="{{map}}" 
-                        slot="marker"
+                longitude="{{ deviceLng }}">
+                <template is="dom-repeat" items="[[ queryResults ]]" as="report" >
+                    <google-map-marker 
                         longitude="{{report.location.longitude}}" 
                         latitude="{{report.location.latitude}}"></google-map-marker>
-                </template> 
+                </template>
             </google-map>
         </paper-card>
         <paper-card heading="Reports">

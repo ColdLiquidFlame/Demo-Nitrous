@@ -108,9 +108,8 @@
                     source="[[ locomotives ]]"
                     text-property="name"
                     value-property="name"
-                    >-->
-                    
-                </paper-autocomplete>
+                    >                    
+                </paper-autocomplete>-->
 
                 <paper-input 
                     id="location"
@@ -221,7 +220,12 @@
                     deviceLat: Number,
                     user: Object,
                     locomotives: Array,
-                    subroute: Object
+                    subroute: Object,
+                    page: {
+                        type: String,
+                        reflectToAttribute: true,
+                        observer: '_pageChanged',
+                    }
                 };
             }
 
@@ -337,6 +341,10 @@
                 this.data.date = new Date();
                 this.lng = this.deviceLng;
                 this.lat = this.deviceLat;
+            }
+
+            _pageChanged() {
+                _resetPage();
             }
         }
 
